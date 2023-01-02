@@ -6,9 +6,7 @@
 The goal of this project is to implement a basic questions and answers appliance deployed across several interconnected services.
 
 ## Autores
-- Arturo Carretero Mateo
-- Álvaro Díez Sáez
-- Estela Victoria Ballester Delgado
+- Baba Bendermel Houssam Eddine
 ## Manual de instalación
 Para realizar el proceso de instalación en el equipo es necesario descargarlo de github a través de la ventana principal del repositorio. Para descargarlo se debe
 clicar en `<> Code` y posteriormente en `Download ZIP`.
@@ -45,19 +43,29 @@ Una vez ejecutados estos comandos se puede ver como se han ejecutado y detenido 
 ![man-instalación2.PNG](imagenes/man-instalación2.PNG)
 
 ## Manual de uso
-- [Manual](#Manual)
-  - [Discusion](#Discusion)
-    - [Ver listado de preguntas](#Ver-listado-de-preguntas)
-    - [Crear preguntas](#crear-preguntas)
-    - [Crear respuestas a preguntas](#Crear-respuestas-a-preguntas)
-    - [Crear comentarios a respuestas](#Crear-comentarios-a-respuestas)
-    - [Votar respuestas y comentarios](#Votar-respuestas-y-comentarios)
-    - [Reportar preguntas, respuestas y comentarios](#Reportar-preguntas-respuestas-y-comentarios)
+- [DMS course project codebase, academic year 2022-2023](#dms-course-project-codebase-academic-year-2022-2023)
+  - [Autores](#autores)
+  - [Manual de instalación](#manual-de-instalación)
+  - [Manual de uso](#manual-de-uso)
+  - [Manual](#manual)
+  - [Discussion](#discussion)
+    - [Ver listado de discusiones](#ver-listado-de-discusiones)
+    - [Crear discussion](#crear-discussion)
+    - [Crear respuestas a preguntas](#crear-respuestas-a-preguntas)
   - [Moderador](#moderador)
-    - [Ver pregunta individual](#Ver-pregunta-individual)
-    - [Ver listado de reportes y resolverlos](#Ver-listado-de-reportes-y-resolverlos)
-    - [Ocultar preguntas al aceptar reportes](#Ocultar-preguntas-al-aceptar-reportes)
+    - [Ver pregunta individual](#ver-pregunta-individual)
+    - [Ver listado de reportes y resolverlos](#ver-listado-de-reportes-y-resolverlos)
   - [Creación de nuevos usuarios](#creación-de-nuevos-usuarios)
+  - [Components](#components)
+    - [Services](#services)
+      - [`dms2223auth`](#dms2223auth)
+      - [`dms2223backend`](#dms2223backend)
+      - [`dms2223frontend`](#dms2223frontend)
+    - [Libraries](#libraries)
+      - [`dms2223core`](#dms2223core)
+  - [Docker](#docker)
+  - [Helper scripts](#helper-scripts)
+  - [GitHub workflows and badges](#github-workflows-and-badges)
 
 ## Manual
 Para la primera entrega teniendo en cuenta que será solo la parte del front-end tendremos las siguientes funcionalidades siendo el usuario "admin".
