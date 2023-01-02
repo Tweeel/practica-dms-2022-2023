@@ -114,7 +114,7 @@ class DiscussionEndpoints():
         id: int = int(str(request.args.get('discussionid')))
         #answers = WebAnswer.list_answers(backend_service,id)
         return render_template('discussion/discussions/view.html', name=name, roles=session['roles'], redirect_to=redirect_to,
-            discussion=WebQuestion.get_discussion(backend_service, id))
+            discussion=WebQuestion.get_discussion(backend_service, id),answers = WebAnswer.list_answers(backend_service,id))
 
     @staticmethod
     def post_discussion_discussions_view(auth_service: AuthService, backend_service: BackendService) -> Union[Response, Text]:
@@ -205,8 +205,8 @@ class DiscussionEndpoints():
         name = session['user']
         answerid: int = int(str(request.args.get('answerid')))
         redirect_to = request.args.get('redirect_to', default='/discussion/discussions/view')
-        return render_template('discussion/discussions/comment.html', name=name, roles=session['roles'],
-            redirect_to=redirect_to, discussion=WebQuestion.get_discussion(backend_service, answerid))
+        return render_template('discussion/discussions/comment.html', name=name, roles=session['roles'], answerid=answerid,
+            redirect_to=redirect_to, discussion=WebQuestion.get_discussion(backend_service, discussionid), answers = WebAnswer.list_answers(backend_service, discussionid))
 
     @staticmethod
     def post_discussion_discussions_comment(auth_service: AuthService, backend_service: BackendService) -> Union[Response, Text]:

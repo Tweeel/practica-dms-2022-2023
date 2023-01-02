@@ -41,7 +41,7 @@ class Answers():
             return new_answer
         except IntegrityError as ex:
             raise DiscussionNotFoundError(
-                'A discussion with id ' + str(discussionid) + ' not exists.'
+                'An answer with id ' + str(answerid) + ' not exists.'
                 ) from ex
 
     @staticmethod
@@ -61,7 +61,7 @@ class Answers():
     @staticmethod
     def discussion_has_answers(session: Session, discussionid: int) -> bool:
         if not discussionid:
-            raise ValueError('A discussion id is required.')
+            raise ValueError('An answer id is required.')
         discussions = Answers.list_all_for_discussion(session, discussionid)
 
         return len(discussions) != 0
@@ -81,12 +81,12 @@ class Answers():
             - List[Answer]: A list of answer registers with the question answers.
         """
         if not discussionid:
-            raise ValueError('A discussion id is required')
+            raise ValueError('An answer id is required')
         query = session.query(Answer).filter_by(discussionid=discussionid)
         return query.all()
 
     @staticmethod
-    def get_answer(session: Session, discussionid: int) -> Answer:
+    def get_answer(session: Session, answerid: int) -> Answer:
         """Return a answer of a certain question and user.
 
         Args:
@@ -100,9 +100,9 @@ class Answers():
         Returns:
             - Answer: Answer of the question.
         """
-        if not discussionid:
+        if not answerid:
             raise ValueError('All fields are required.')
         query = session.query(Answer).filter_by(
-            discussionid=discussionid
+            answerid=answerid
         )
         return query.all()

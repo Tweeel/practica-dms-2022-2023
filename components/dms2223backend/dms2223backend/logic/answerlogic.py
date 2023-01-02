@@ -50,6 +50,23 @@ class AnswerLogic():
             - List[List]: A list of `Discussion` registers.
         """
         return Answers.list_all(session)
+
+    @staticmethod
+    def list_all_for_discussion(discussionid: int, session: Session) -> List[Answer]:
+        """Lists the `answers made to a certain question.
+
+        Args:
+            - session (Session): The session object.
+            - id (int): The question id.
+
+        Raises:
+            - ValueError: If the question id is missing.
+
+        Returns:
+            - List[Answer]: A list of answer registers with the question answers.
+        """
+        return Answers.list_all_for_discussion(session, discussionid)
+    
     
     @staticmethod
     def get_answer(session: Session ,discussionid: int) -> Answer:
