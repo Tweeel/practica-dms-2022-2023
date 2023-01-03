@@ -4,7 +4,7 @@
 from typing import List
 from sqlalchemy.orm.session import Session  # type: ignore
 from dms2223backend.data.db.results import Answer
-from dms2223backend.data.db.resultsets import Answers
+from dms2223backend.data.db.resultsets import Answers, Comments
 
 
 
@@ -40,7 +40,7 @@ class AnswerLogic():
         return new_answer
 
     @staticmethod
-    def list_all(session: Session) -> List[Answer]:
+    def list_all(session: Session) -> List[List]:
         """Lists every answer.
 
         Args:

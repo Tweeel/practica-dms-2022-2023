@@ -12,7 +12,7 @@ class CommentsServices():
     """ Monostate class that provides high-level services to handle user-related use cases.
     """
     @staticmethod
-    def comment(answerid: int, content: str, schema: Schema) -> Dict:
+    def comment(discussionid: int, answerid: int, content: str, schema: Schema) -> Dict:
         """Comments an answer.
 
         Args:
@@ -26,9 +26,10 @@ class CommentsServices():
         session: Session = schema.new_session()
         out: Dict = {}
         try:
-            new_comment: Comment = CommentLogic.comment(session, answerid, content)
+            new_comment: Comment = CommentLogic.comment(session, discussionid, answerid, content)
             
             out['id'] = new_comment.id #type: ignore
+            out['discussionid'] = new_comment.discussionid 
             out['answerid'] = new_comment.answerid
             out['content'] = new_comment.content
 
@@ -36,6 +37,30 @@ class CommentsServices():
             raise ex
         finally:
             schema.remove_session()
+        return out
+
+    @staticmethod
+    def list_all_for_discussion(discussionid: int, schema: Schema) -> List[Dict]:
+        """Lists the comments of a discussion if the requestor has the discussion role.
+
+        Args:
+            - disucssionId (int): Discussion id.
+            - schema (Schema): A database handler where the discussions are mapped into.
+
+        Returns:
+            - List[Dict]: List of dictionaries with the comments' data.
+        """
+        out: List[Dict] = []
+        session: Session = schema.new_session()
+        comments: List[Comment] = CommentLogic.list_all_for_discussion(discussionid, session)
+        for comment in comments:
+            out.append({
+                'id': comment.id, #type: ignore
+                'discussionid': comment.discussionid,
+                'answerid': comment.answerid,
+                'content': comment.content
+            })
+        schema.remove_session()
         return out
 
     @staticmethod
@@ -51,10 +76,11 @@ class CommentsServices():
         """
         out: List[Dict] = []
         session: Session = schema.new_session()
-        comments: List[Comment] = CommentLogic.list_all(session)
+        comments: List[Comment] = CommentLogic.list_all_for_answer(answerid, session)
         for comment in comments:
             out.append({
                 'id': comment.id, #type: ignore
+                'discussionid': comment.discussionid,
                 'answerid': comment.answerid,
                 'content': comment.content
             })
@@ -62,7 +88,7 @@ class CommentsServices():
         return out
 
     @staticmethod
-    def get_comment(answerid: int, schema: Schema) -> Dict:
+    def get_comment(discussionid: int, answerid: int, schema: Schema) -> Dict:
         """Obtains the comment of a discussion and user.
 
         Args:
@@ -75,8 +101,9 @@ class CommentsServices():
         """
         session: Session = schema.new_session()
         out: Dict = {}
-        comment: Comment = CommentLogic.get_comment(session, answerid)
+        comment: Comment = CommentLogic.get_comment(session, discussionid, answerid)
         out['id'] = comment.id #type: ignore
+        out['discussionid'] = comment.discussionid #type: ignore
         out['answerid'] = comment.answerid
         out['content'] = comment.content
         schema.remove_session()

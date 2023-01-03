@@ -114,7 +114,8 @@ class DiscussionEndpoints():
         id: int = int(str(request.args.get('discussionid')))
         #answers = WebAnswer.list_answers(backend_service,id)
         return render_template('discussion/discussions/view.html', name=name, roles=session['roles'], redirect_to=redirect_to,
-            discussion=WebQuestion.get_discussion(backend_service, id),answers = WebAnswer.list_answers(backend_service,id))
+            discussion=WebQuestion.get_discussion(backend_service, id), answers = WebAnswer.list_answers(backend_service,id),
+            comments = WebComment.list_comments(backend_service, id))
 
     @staticmethod
     def post_discussion_discussions_view(auth_service: AuthService, backend_service: BackendService) -> Union[Response, Text]:
@@ -203,9 +204,10 @@ class DiscussionEndpoints():
         if Role.DISCUSSION.name not in session['roles']:
             return redirect(url_for('get_home'))
         name = session['user']
+        discussionid: int = int(str(request.args.get('discussionid')))
         answerid: int = int(str(request.args.get('answerid')))
         redirect_to = request.args.get('redirect_to', default='/discussion/discussions/view')
-        return render_template('discussion/discussions/comment.html', name=name, roles=session['roles'], answerid=answerid,
+        return render_template('discussion/discussions/comment.html', name=name, roles=session['roles'], answerid=answerid, discussionid=discussionid,
             redirect_to=redirect_to, discussion=WebQuestion.get_discussion(backend_service, discussionid), answers = WebAnswer.list_answers(backend_service, discussionid))
 
     @staticmethod
@@ -225,18 +227,21 @@ class DiscussionEndpoints():
             return redirect(url_for('get_home'))
 
         new_comment = WebComment.create_comment(backend_service,
+                                        int(request.form['discussionid']),
                                         int(request.form['answerid']),
                                         request.form['content']
                                         )
                                     
         if not new_comment:
             answerid: int = int(str(request.form['answerid']))
-            redirect_to = url_for('get_discussion_discussions_view', answerid=answerid)
-            return redirect(url_for('get_discussion_discussions_comment', answerid=answerid, redirect_to=redirect_to))
+            discussionid = int(str(request.form['discussionid']))
+            redirect_to = url_for('get_discussion_discussions_view', discussionid=discussionid)
+            return redirect(url_for('get_discussion_discussions_comment',discussionid=discussionid, answerid=answerid, redirect_to=redirect_to))
+
         redirect_to = request.form['redirect_to']
         if not redirect_to:
-            answerid = int(str(request.form['answerid']))
-            redirect_to = url_for('get_discussion_discussions_view', answerid=answerid)
+            discussionid = int(str(request.form['discussionid']))
+            redirect_to = url_for('get_discussion_discussions_view', discussionid=discussionid)
 
         return redirect(redirect_to)
 
@@ -273,7 +278,6 @@ class DiscussionEndpoints():
             return redirect(url_for('get_login'))
         if Role.DISCUSSION.name not in session['roles']:
             return redirect(url_for('get_home'))
-
         redirect_to = request.args.get('redirect_to', default='/discussion/discussions')
         return redirect(redirect_to)
 

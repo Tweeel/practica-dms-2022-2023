@@ -121,8 +121,8 @@ def get_moderator_discussions():
     return ModeratorEndpoints.get_moderator_discussions(auth_service,backend_service)
 
 @app.route("/moderator/discussions/view", methods=['GET'])
-def get_discussions_view():
-    return ModeratorEndpoints.get_discussions_view(auth_service)
+def get_moderator_discussions_view():
+    return ModeratorEndpoints.get_moderator_discussions_view(auth_service, backend_service)
 
 @app.route("/moderator/moderator/view", methods=['GET'])
 def get_moderator_moderator_view():

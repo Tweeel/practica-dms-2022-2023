@@ -8,9 +8,10 @@
             <tr>
                 <th class="alignleft">discussion title</th><th></th>
             </tr>
-            {% for report in reports %}
+            {% for discussion in discussions %}
                 <tr class="highlightable">
-                    <td class="alignleft">{{ button('grayBg', '/moderator/discussions/view?reporttitle=' + report['title'] + '&redirect_to=/moderator/discussions', report['title']) }}</td>
+                    <td class="alignleft">{{ button('grayBg', '/moderator/discussions/view?discussionid=' + discussion['id']|string
+                    + '&redirect_to=/moderator/discussions', discussion['title']) }}</td>                
                 </tr>
             {% endfor %}
 

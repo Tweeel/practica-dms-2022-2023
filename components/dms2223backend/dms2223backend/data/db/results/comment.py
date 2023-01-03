@@ -8,7 +8,7 @@ class Comment(ResultBase):
     """ Definition and storage of comment ORM records.
     """
 
-    def __init__(self, answerid: int,content: str):
+    def __init__(self, discussionid: int,  answerid: int,content: str):
         """ Constructor method.
 
         Initializes a comment record.
@@ -19,6 +19,7 @@ class Comment(ResultBase):
 
         """
 
+        self.discussionid: int = discussionid
         self.answerid: int = answerid
         self.content: str = content
 
@@ -38,6 +39,7 @@ class Comment(ResultBase):
             'comments',
             metadata,
             Column('id', Integer, autoincrement='auto', primary_key=True),
+            Column('discussionid', Integer, nullable=False),
             Column('answerid', Integer, ForeignKey('answers.id'), nullable=False),
             Column('content', String(250), nullable=False)
         )

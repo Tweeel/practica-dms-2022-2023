@@ -12,7 +12,7 @@ class Comments():
     """ Class responsible of table-level comments operations.
     """
     @staticmethod
-    def comment(session: Session, answerid: int, content: str) -> Comment:
+    def comment(session: Session, discussionid: int, answerid: int, content: str) -> Comment:
         """ Comment a comment.
 
         Note:
@@ -30,16 +30,16 @@ class Comments():
         Returns:
             - User: The created `Discussion` result.
         """
-        if not answerid or not content:
+        if not answerid or not content or not discussionid:
             raise ValueError('An content and an Id hash are required.')
         try:
-            new_comment = Comment(answerid, content)
+            new_comment = Comment(discussionid, answerid, content)
             session.add(new_comment)
             session.commit()
             return new_comment
         except IntegrityError as ex:
             raise DiscussionNotFoundError(
-                'A discussion with id ' + str(answerid) + ' not exists.'
+                'An answer with id ' + str(answerid) + ' not exists.'
                 ) from ex
 
 
@@ -59,7 +59,7 @@ class Comments():
     @staticmethod
     def answer_has_comments(session: Session, answerid: int) -> bool:
         if not answerid:
-            raise ValueError('A discussion id is required.')
+            raise ValueError('An answer id is required.')
         answers = Comments.list_all_for_answer(session, answerid)
 
         return len(answers) != 0
@@ -84,7 +84,26 @@ class Comments():
         return query.all()
 
     @staticmethod
-    def get_answer(session: Session, answerid: int) -> Comment:
+    def list_all_for_discussion(session: Session, discussionid: int) -> List[Comment]:
+        """Lists the `answers made to a certain question.
+
+        Args:
+            - session (Session): The session object.
+            - id (int): The question id.
+
+        Raises:
+            - ValueError: If the question id is missing.
+
+        Returns:
+            - List[Answer]: A list of answer registers with the question answers.
+        """
+        if not discussionid:
+            raise ValueError('An answer id is required')
+        query = session.query(Comment).filter_by(discussionid=discussionid)
+        return query.all()
+
+    @staticmethod
+    def get_comment(session: Session, discussionid: int, answerid: int) -> Comment:
         """Return a answer of a certain question and user.
 
         Args:
@@ -98,9 +117,9 @@ class Comments():
         Returns:
             - Answer: Answer of the question.
         """
-        if not answerid:
+        if not answerid or not discussionid:
             raise ValueError('All fields are required.')
         query = session.query(Comment).filter_by(
-            answerid=answerid
+            discussionid=discussionid, answerid=answerid
         )
         return query.all()

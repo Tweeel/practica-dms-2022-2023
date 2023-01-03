@@ -20,7 +20,9 @@ Answers.answer(session, 1, "respond 1 to discution 1")
 Answers.answer(session, 1, "respond 2 to discution 1")
 Answers.answer(session, 2, "respond 1 to discution 2")
 
-Comments.comment(session, 1, "Comente 1 to respond 1")
-Comments.comment(session, 1, "Comente 2 to respond 1")
-Comments.comment(session, 2, "Comente 1 to respond 2")
+Comments.comment(session, 1, 1, "Comente 1 to respond 1")
+Comments.comment(session, 1, 2, "Comente 2 to respond 1 and 2")
+Comments.comment(session, 2, 2, "Comente 1 to respond 2")
+Comments.comment(session, 2, 3, "Comente 1 to respond 2 and 3")
+
 db.remove_session()
