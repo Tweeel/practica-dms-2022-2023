@@ -5,8 +5,6 @@ from typing import List
 from sqlalchemy.orm.session import Session  # type: ignore
 from dms2223backend.data.db.results import Comment
 from dms2223backend.data.db.resultsets import Comments
-
-
 class CommentLogic():
     """ Class responsible of table-level comments operations.
     """
@@ -30,7 +28,8 @@ class CommentLogic():
             - User: The created `Discussion` result.
         """
         try:
-            new_comment: Comment = Comments.comment(session, discussionid, answerid, content)           
+            new_comment: Comment = Comments.comment(session, discussionid, answerid, content)
+           
         except Exception as ex:
             raise ex
         return new_comment
@@ -49,22 +48,6 @@ class CommentLogic():
         return Comments.list_all(session)
 
     @staticmethod
-    def list_all_for_answer(answerid: int, session: Session) -> List[Comment]:
-        """Lists the `answers made to a certain question.
-
-        Args:
-            - session (Session): The session object.
-            - id (int): The question id.
-
-        Raises:
-            - ValueError: If the question id is missing.
-
-        Returns:
-            - List[Answer]: A list of answer registers with the question answers.
-        """
-        return Comments.list_all_for_answer(session, answerid)
-
-    @staticmethod
     def list_all_for_discussion(discussionid: int, session: Session) -> List[Comment]:
         """Lists the `answers made to a certain question.
 
@@ -79,6 +62,22 @@ class CommentLogic():
             - List[Answer]: A list of answer registers with the question answers.
         """
         return Comments.list_all_for_discussion(session, discussionid)
+
+    @staticmethod
+    def list_all_for_answer(answerid: int, session: Session) -> List[Comment]:
+        """Lists the `answers made to a certain question.
+
+        Args:
+            - session (Session): The session object.
+            - id (int): The question id.
+
+        Raises:
+            - ValueError: If the question id is missing.
+
+        Returns:
+            - List[Answer]: A list of answer registers with the question answers.
+        """
+        return Comments.list_all_for_answer(session, answerid)
 
     @staticmethod
     def get_comment(session: Session, discussionid: int, answerid: int) -> Comment:
@@ -97,3 +96,5 @@ class CommentLogic():
         except Exception as ex:
             raise ex
         return comment
+
+    

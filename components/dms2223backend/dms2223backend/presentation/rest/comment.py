@@ -8,8 +8,6 @@ from dms2223backend.data.db.exc import DiscussionNotFoundError
 from dms2223backend.logic.exc.operationerror import OperationError
 from dms2223backend.service import CommentsServices
 
-
-
 def comment(body: Dict, id: int) -> Tuple[Union[Dict, str], Optional[int]]:
     """Comments a discussion if the requestor has the discussion role.
 
@@ -37,6 +35,7 @@ def comment(body: Dict, id: int) -> Tuple[Union[Dict, str], Optional[int]]:
             return ('The user with the given username can not create a discussion', HTTPStatus.FORBIDDEN.value)
     return (comment, HTTPStatus.OK.value)
 
+
 def list_all_for_discussion(id: int) -> Tuple[Union[List[Dict], str], Optional[int]]:
     """Lists the comments of an answer if the requestor has the discussion role.
 
@@ -58,7 +57,8 @@ def list_all_for_discussion(id: int) -> Tuple[Union[List[Dict], str], Optional[i
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)
 
     return (comments, HTTPStatus.OK.value)
-    
+
+
 def list_all_for_answer(id: int) -> Tuple[Union[List[Dict], str], Optional[int]]:
     """Lists the comments of an answer if the requestor has the discussion role.
 

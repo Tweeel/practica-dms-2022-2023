@@ -48,3 +48,4 @@ class WebComment():
     def get_comment(backend_service: BackendService, id: int) -> Optional[Dict]:
         response: ResponseData = backend_service.get_comment(session.get('token'), id)
         WebUtils.flash_response_messages(response)
+        return response.get_content()

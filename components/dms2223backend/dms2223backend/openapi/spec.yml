@@ -11,6 +11,7 @@ info:
     although it is highly recommended in actual production scenarios.
 
     Diseño y Mantenimiento del Software.
+
     Grado en Ingeniería Informática, Universidad de Burgos, 2022-2023.
   contact:
     name: Universidad de Burgos
@@ -141,7 +142,7 @@ paths:
       summary: Gets the answers for a question
       description: |
         Fetches the full answers for a given question.
-      operationId: dms2223backend.presentation.rest.comment.list_all_for_discussion
+      operationId: dms2223backend.presentation.rest.answer.list_all_for_discussion
       parameters:
         - $ref: '#/components/parameters/QuestionIdPathParam'
       responses:
@@ -277,55 +278,127 @@ paths:
       security:
         - user_token: []
           api_key: []
-  
-  # /discussions/{qid}/reports:
-  #   post:
-  #     summary: Reports a question
-  #     description: |
-  #       This operation will report a question to be reviewed by a moderator.
 
-  #       The owner of the report will be automatically retrieved from the
-  #       user token against the authorization server.
-  #     # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #     parameters:
-  #       - $ref: '#/components/parameters/QuestionIdPathParam'
-  #     requestBody:
-  #       content:
-  #         'application/json':
-  #           schema:
-  #             $ref: '#/components/schemas/QuestionReportCreationModel'
-  #           example:
-  #             reason: Promotes hate speech
-  #     responses:
-  #       '201':
-  #         description: The created report.
-  #         content:
-  #           'application/json':
-  #             schema:
-  #               $ref: '#/components/schemas/QuestionReportFullModel'
-  #             example:
-  #               id: 1
-  #               qid: 2
-  #               reason: Promotes hate speech
-  #               status: PENDING
-  #               owner:
-  #                 username: user4
-  #               timestamp: 1665922785
-  #       '404':
-  #         description: The question does not exist.
-  #         content:
-  #           'text/plain':
-  #             schema:
-  #               type: string
-  #             example: 'The question with qid 5 does not exist.'
-  #     tags:
-  #       - discussion
-  #       - moderation
-  #       - questions
-  #       - reports
-  #     security:
-  #       - user_token: []
-  #         api_key: []
+  /discussions/reports:
+    get:
+      summary: Get a list of question reports.
+      description: |
+        This operation gets a listing of question reports.
+
+        Several parameters can be used to filter out the reports according to
+        their status.
+      operationId: dms2223backend.presentation.rest.moderate.list_reports
+      parameters:
+        - name: pending
+          description: |
+            Set to `false` to exclude the pending reports from the listing.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: accepted
+          description: |
+            Set to `false` to exclude the accepted reports from the listing.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: rejected
+          description: |
+            Set to `false` to exclude the rejected reports from the listing.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Listing of question reports
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/QuestionReportsListModel'
+              example:
+                - id: 1
+                  qid: 2
+                  reason: Promotes hate speech
+                  status: ACCEPTED
+                  owner:
+                    username: user4
+                  timestamp: 1665922785
+                - id: 2
+                  qid: 4
+                  reason: Not a question
+                  status: REJECTED
+                  owner:
+                    username: user5
+                  timestamp: 1665922785
+                - id: 3
+                  qid: 4
+                  reason: Question is too vague
+                  status: PENDING
+                  owner:
+                    username: user5
+                  timestamp: 1665922785
+      tags:
+        - moderation
+        - questions
+        - reports
+      security:
+        - user_token: []
+          api_key: []
+
+  /discussions/{id}/reports:
+    post:
+      summary: Reports a question
+      description: |
+        This operation will report a question to be reviewed by a moderator.
+
+        The owner of the report will be automatically retrieved from the
+        user token against the authorization server.
+      operationId: dms2223backend.presentation.rest.moderate.create_report
+      parameters:
+        - $ref: '#/components/parameters/QuestionIdPathParam'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/QuestionReportCreationModel'
+            example:
+              reason: Promotes hate speech
+      responses:
+        '201':
+          description: The created report.
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/QuestionReportFullModel'
+              example:
+                id: 1
+                qid: 2
+                reason: Promotes hate speech
+                status: PENDING
+                owner:
+                  username: user4
+                timestamp: 1665922785
+        '404':
+          description: The question does not exist.
+          content:
+            'text/plain':
+              schema:
+                type: string
+              example: 'The question with qid 5 does not exist.'
+      tags:
+        - discussion
+        - moderation
+        - questions
+        - reports
+      security:
+        - user_token: []
+          api_key: []
+
   # /discussions/reports:
   #   get:
   #     summary: Get a list of question reports.
@@ -461,12 +534,103 @@ paths:
   #     security:
   #       - user_token: []
   #         api_key: []
-  /answers/{aid}/comments:
+  /answers/{id}/comments:
+    get:
+      summary: Gets the comments for an answer
+      description: |
+        Fetches the full answers for a given question.
+      operationId: dms2223backend.presentation.rest.comment.list_all_for_discussion
+      parameters:
+        - $ref: '#/components/parameters/AnswerIdPathParam'
+      responses:
+        '200':
+          description: The answers for a question.
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/CommentsListModel'
+              example:
+                - id: 1
+                  qid: 1
+                  timestamp: 1665575089
+                  body: I would suggest four members.
+                  owner:
+                    username: user3
+                  votes: 4
+                  user_votes:
+                    user3: true
+                    user4: true
+                    user5: true
+                    user6: true
+                  comments:
+                    - id: 2
+                      aid: 1
+                      timestamp: 1665575389
+                      body: Evaluation criteria may be relaxed due to the tight number of members
+                      sentiment: POSITIVE
+                      owner:
+                        username: user4
+                      votes: 2
+                      user_votes:
+                        user6: true
+                        user5: true
+                    - id: 1
+                      aid: 1
+                      timestamp: 1665575289
+                      body: Enough to distribute the workload equitatively
+                      sentiment: POSITIVE
+                      owner:
+                        username: user4
+                      votes: 1
+                      user_votes:
+                        user6: true
+                    - id: 3
+                      aid: 1
+                      timestamp: 1665577389
+                      body: The deadline may be too close for the workload and a group this "small"
+                      sentiment: NEGATIVE
+                      owner:
+                        username: user4
+                      votes: 0
+                      user_votes: []
+                - id: 2
+                  qid: 1
+                  timestamp: 1665675089
+                  body: Five members.
+                  owner:
+                    username: user2
+                  votes: 2
+                  user_votes:
+                    user1: true
+                    user2: true
+                  comments:
+                    - id: 4
+                      aid: 2
+                      timestamp: 1665777389
+                      body: The teacher may be stricter if groups are too large
+                      sentiment: NEGATIVE
+                      owner:
+                        username: user4
+                      votes: 0
+                      user_votes: []
+        '404':
+          description: The question does not exist.
+          content:
+            'text/plain':
+              schema:
+                type: string
+              example: 'The question with qid 5 does not exist.'
+      tags:
+        - answer
+        - comments
+      security:
+        - user_token: []
+          api_key: []
+
     post:
       summary: Comments an answer
       description: |
         This operation creates a comment for an existing answer.
-
         The owner of the comment will be automatically retrieved from the user
         token against the authorization server.
       operationId: dms2223backend.presentation.rest.comment.comment
@@ -511,109 +675,112 @@ paths:
       security:
         - user_token: []
           api_key: []
-  # /answers/{aid}/reports:
-  #   post:
-  #     summary: Reports an answer
-  #     description: |
-  #       This operation will report an answer to be reviewed by a moderator.
 
-  #       The owner of the report will be automatically retrieved from the
-  #       user token against the authorization server.
-  #     # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #     parameters:
-  #       - $ref: '#/components/parameters/AnswerIdPathParam'
-  #     requestBody:
-  #       content:
-  #         'application/json':
-  #           schema:
-  #             $ref: '#/components/schemas/AnswerReportCreationModel'
-  #           example:
-  #             reason: Unrelated to the question
-  #     responses:
-  #       '201':
-  #         description: The created report.
-  #         content:
-  #           'application/json':
-  #             schema:
-  #               $ref: '#/components/schemas/AnswerReportFullModel'
-  #             example:
-  #               id: 1
-  #               aid: 7
-  #               reason: Unrelated to the question
-  #               status: PENDING
-  #               owner:
-  #                 username: user4
-  #               timestamp: 1665922785
-  #       '404':
-  #         description: The answer does not exist.
-  #         content:
-  #           'text/plain':
-  #             schema:
-  #               type: string
-  #             example: 'The answer with aid 50 does not exist.'
-  #     tags:
-  #       - discussion
-  #       - moderation
-  #       - answers
-  #       - reports
-  #     security:
-  #       - user_token: []
-  #         api_key: []
-  /answers/reports:
-    get:
-      summary: Get a list of answer reports.
+  /answers/{id}/reports:
+    post:
+      summary: Reports an answer
       description: |
-        This operation gets a listing of answer reports.
-        Several parameters can be used to filter out the reports according to
-        their status.
-      operationId: dms2223backend.presentation.rest.moderate.list_reports_answer
+        This operation will report an answer to be reviewed by a moderator.
+
+        The owner of the report will be automatically retrieved from the
+        user token against the authorization server.
+      operationId: dms2223backend.presentation.rest.moderate.create_answer_report
       parameters:
-        - name: pending
-          description: |
-            Set to `false` to exclude the pending reports from the listing.
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: true
-        - name: accepted
-          description: |
-            Set to `false` to exclude the accepted reports from the listing.
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: true
-        - name: rejected
-          description: |
-            Set to `false` to exclude the rejected reports from the listing.
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: true
+        - $ref: '#/components/parameters/AnswerIdPathParam'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/AnswerReportCreationModel'
+            example:
+              reason: Unrelated to the question
       responses:
-        '200':
-          description: Listing of answer reports
+        '201':
+          description: The created report.
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/AnswerReportsListModel'
+                $ref: '#/components/schemas/AnswerReportFullModel'
               example:
-                - id: 1
-                  aid: 7
-                  reason: Unrelated to the question
-                  status: ACCEPTED
-                  owner:
-                    username: user4
-                  timestamp: 1665922785
+                id: 1
+                aid: 7
+                reason: Unrelated to the question
+                status: PENDING
+                owner:
+                  username: user4
+                timestamp: 1665922785
+        '404':
+          description: The answer does not exist.
+          content:
+            'text/plain':
+              schema:
+                type: string
+              example: 'The answer with aid 50 does not exist.'
       tags:
+        - discussion
         - moderation
         - answers
         - reports
       security:
         - user_token: []
           api_key: []
+
+  /answers/reports:
+      get:
+        summary: Get a list of answer reports.
+        description: |
+          This operation gets a listing of answer reports.
+
+          Several parameters can be used to filter out the reports according to
+          their status.
+        operationId: dms2223backend.presentation.rest.moderate.list_reports_answer
+        parameters:
+          - name: pending
+            description: |
+              Set to `false` to exclude the pending reports from the listing.
+            in: query
+            required: false
+            schema:
+              type: boolean
+              default: true
+          - name: accepted
+            description: |
+              Set to `false` to exclude the accepted reports from the listing.
+            in: query
+            required: false
+            schema:
+              type: boolean
+              default: true
+          - name: rejected
+            description: |
+              Set to `false` to exclude the rejected reports from the listing.
+            in: query
+            required: false
+            schema:
+              type: boolean
+              default: true
+        responses:
+          '200':
+            description: Listing of answer reports
+            content:
+              'application/json':
+                schema:
+                  $ref: '#/components/schemas/AnswerReportsListModel'
+                example:
+                  - id: 1
+                    aid: 7
+                    reason: Unrelated to the question
+                    status: ACCEPTED
+                    owner:
+                      username: user4
+                    timestamp: 1665922785
+        tags:
+          - moderation
+          - answers
+          - reports
+        security:
+          - user_token: []
+            api_key: []
   # /answers/reports/{arid}:
   #   put:
   #     summary: Change the status of an answer report
@@ -679,145 +846,147 @@ paths:
   #     security:
   #       - user_token: []
   #         api_key: []
-  # /comments/{cid}/reports:
-  #   post:
-  #     summary: Reports a comment
-  #     description: |
-  #       This operation will report a comment to be reviewed by a moderator.
 
-  #       The owner of the report will be automatically retrieved from the
-  #       user token against the authorization server.
-  #     # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #     parameters:
-  #       - $ref: '#/components/parameters/CommentIdPathParam'
-  #     requestBody:
-  #       content:
-  #         'application/json':
-  #           schema:
-  #             $ref: '#/components/schemas/CommentReportCreationModel'
-  #           example:
-  #             reason: Ambiguous sentiment
-  #     responses:
-  #       '201':
-  #         description: The created report.
-  #         content:
-  #           'application/json':
-  #             schema:
-  #               $ref: '#/components/schemas/CommentReportFullModel'
-  #             example:
-  #               id: 1
-  #               cid: 7
-  #               reason: Ambiguous sentiment
-  #               status: PENDING
-  #               owner:
-  #                 username: user4
-  #               timestamp: 1665922785
-  #       '404':
-  #         description: The comment does not exist.
-  #         content:
-  #           'text/plain':
-  #             schema:
-  #               type: string
-  #             example: 'The comment with cid 75 does not exist.'
-  #     tags:
-  #       - discussion
-  #       - moderation
-  #       - comments
-  #       - reports
-  #     security:
-  #       - user_token: []
-  #         api_key: []
-  # /comments/reports:
-  #   get:
-  #     summary: Get a list of comment reports.
-  #     description: |
-  #       This operation gets a listing of comment reports.
+  /comments/{id}/reports:
+    post:
+      summary: Reports a comment
+      description: |
+        This operation will report a comment to be reviewed by a moderator.
 
-  #       Several parameters can be used to filter out the reports according to
-  #       their status.
-  #     # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #     parameters:
-  #       - name: pending
-  #         description: |
-  #           Set to `false` to exclude the pending reports from the listing.
-  #         in: query
-  #         required: false
-  #         schema:
-  #           type: boolean
-  #           default: true
-  #       - name: accepted
-  #         description: |
-  #           Set to `false` to exclude the accepted reports from the listing.
-  #         in: query
-  #         required: false
-  #         schema:
-  #           type: boolean
-  #           default: true
-  #       - name: rejected
-  #         description: |
-  #           Set to `false` to exclude the rejected reports from the listing.
-  #         in: query
-  #         required: false
-  #         schema:
-  #           type: boolean
-  #           default: true
-  #     responses:
-  #       '200':
-  #         description: Listing of comment reports
-  #         content:
-  #           'application/json':
-  #             schema:
-  #               $ref: '#/components/schemas/CommentReportsListModel'
-  #             example:
-  #               - id: 1
-  #                 cid: 7
-  #                 reason: Ambiguous sentiment
-  #                 status: ACCEPTED
-  #                 owner:
-  #                   username: user4
-  #                 timestamp: 1665922785
-  #     tags:
-  #       - moderation
-  #       - comments
-  #       - reports
-  #     security:
-  #       - user_token: []
-  #         api_key: []
-  # /comments/reports/{crid}:
-    # put:
-    #   summary: Change the status of a comment report
-    #   description: |
-    #     Use this operation to change the status of a comment report.
-
-    #     When a report on a comment is accepted, the linked comment should be
-    #     hidden so it will not be visible.
-    #   # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-    #   parameters:
-    #     - $ref: '#/components/parameters/CommentReportIdPathParam'
-    #   requestBody:
-    #     content:
-    #       'application/json':
-    #         schema:
-    #           $ref: '#/components/schemas/ReportStatusChangeModel'
-    #         example:
-    #           status: ACCEPTED
-    #   responses:
-    #     '204':
-    #       $ref: '#/components/responses/ReportStatusChanged'
-    #     '404':
-    #       description: The comment report does not exist.
-    #       content:
-    #         'text/plain':
-    #           schema:
-    #             type: string
-    #           example: 'The comment report with crid 25 does not exist.'
-    #   tags:
-    #     - moderation
-    #     - comments
-    #     - reports
-    #   security:
+        The owner of the report will be automatically retrieved from the
+        user token against the authorization server.
+      operationId: dms2223backend.presentation.rest.moderate.create_comment_report
+      parameters:
+        - $ref: '#/components/parameters/CommentIdPathParam'
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CommentReportCreationModel'
+            example:
+              reason: Ambiguous sentiment
+      responses:
+        '201':
+          description: The created report.
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/CommentReportFullModel'
+              example:
+                id: 1
+                cid: 7
+                reason: Ambiguous sentiment
+                status: PENDING
+                owner:
+                  username: user4
+                timestamp: 1665922785
+        '404':
+          description: The comment does not exist.
+          content:
+            'text/plain':
+              schema:
+                type: string
+              example: 'The comment with cid 75 does not exist.'
+      tags:
+        - discussion
+        - moderation
+        - comments
+        - reports
+      security:
         - user_token: []
           api_key: []
+
+  /comments/reports:
+    get:
+      summary: Get a list of comment reports.
+      description: |
+        This operation gets a listing of comment reports.
+
+        Several parameters can be used to filter out the reports according to
+        their status.
+      operationId: dms2223backend.presentation.rest.moderate.list_reports_comments
+      parameters:
+        - name: pending
+          description: |
+            Set to `false` to exclude the pending reports from the listing.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: accepted
+          description: |
+            Set to `false` to exclude the accepted reports from the listing.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: rejected
+          description: |
+            Set to `false` to exclude the rejected reports from the listing.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Listing of comment reports
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/CommentReportsListModel'
+              example:
+                - id: 1
+                  cid: 7
+                  reason: Ambiguous sentiment
+                  status: ACCEPTED
+                  owner:
+                    username: user4
+                  timestamp: 1665922785
+      tags:
+        - moderation
+        - comments
+        - reports
+      security:
+        - user_token: []
+          api_key: []
+  # /comments/reports/{crid}:
+  #     put:
+  #       summary: Change the status of a comment report
+  #       description: |
+  #         Use this operation to change the status of a comment report.
+
+  #         When a report on a comment is accepted, the linked comment should be
+  #         hidden so it will not be visible.
+  #       operationId: TODO: Set to the fully-qualified name of the function handling the operation
+  #       parameters:
+  #         - $ref: '#/components/parameters/CommentReportIdPathParam'
+  #       requestBody:
+  #         content:
+  #           'application/json':
+  #             schema:
+  #               $ref: '#/components/schemas/ReportStatusChangeModel'
+  #             example:
+  #               status: ACCEPTED
+  #       responses:
+  #         '204':
+  #           $ref: '#/components/responses/ReportStatusChanged'
+  #         '404':
+  #           description: The comment report does not exist.
+  #           content:
+  #             'text/plain':
+  #               schema:
+  #                 type: string
+  #               example: 'The comment report with crid 25 does not exist.'
+  #       tags:
+  #         - moderation
+  #         - comments
+  #         - reports
+  #       security:
+  #         - user_token: []
+  #           api_key: []
 components:
   schemas:
     QuestionCoreModel:
@@ -903,6 +1072,7 @@ components:
         
         comments:
           $ref: '#/components/schemas/CommentsListModel'
+
       
       required:
         #- aid
@@ -958,8 +1128,41 @@ components:
         #   type: object
         #   additionalProperties:
         #     type: boolean
+        # content:
+        #     type: string
+        # id:
+        #   type: integer
+        # aid:
+        #   type: integer
+        # timestamp:
+        #   type: number
+        # body:
+        #   type: string
+        # sentiment:
+        #   type: string
+        #   enum:
+        #     - POSITIVE
+        #     - NEUTRAL
+        #     - NEGATIVE
+        # owner:
+        #   $ref: '#/components/schemas/UserCoreModel'
+        # votes:
+        #   type: integer
+        #   minimum: 0
+        #   default: 0
+        #   nullable: false
+        # user_votes:
+        #   type: object
+        #   additionalProperties:
+        #     type: boolean
       required:
         - content
+        # - id
+        # - aid
+        # - timestamp
+        # - content
+        # - sentiment
+        # - owner
         # - id
         # - aid
         # - timestamp
@@ -978,8 +1181,16 @@ components:
         #     - NEUTRAL
         #     - NEGATIVE
         #   default: NEUTRAL
+        # sentiment:
+        #   type: string
+        #   enum:
+        #     - POSITIVE
+        #     - NEUTRAL
+        #     - NEGATIVE
+        #   default: NEUTRAL
       required:
         - content
+        #- sentiment
         #- sentiment
     CommentsListModel:
       type: array
@@ -1114,6 +1325,7 @@ components:
     EmptyContentModel:
       type: string
       nullable: true
+  
   parameters:
     QuestionIdPathParam:
       name: id
@@ -1123,7 +1335,7 @@ components:
         type: integer
       required: true
     AnswerIdPathParam:
-      name: aid
+      name: id
       description: Answer identifier.
       in: path
       schema:
@@ -1193,7 +1405,7 @@ components:
         JWS token sent in the `Authorization` header as bearer.
 
         Contains, among other things, the user doing the requests.
-
+        
         It is intended to be handed to the authorization service to obtain
         useful information, rather than trying to decode it in the backend.
       type: http
@@ -1208,3 +1420,4 @@ components:
       name: X-ApiKey-Backend
       in: header
       x-apikeyInfoFunc: dms2223backend.presentation.rest.security.verify_api_key
+

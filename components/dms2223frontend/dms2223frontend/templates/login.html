@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% from "macros/flashedmessages.html" import flashedmessages %}
 {% from "macros/buttons.html" import submit_button %}
-{% block title %}Iniciar sesión{% endblock %}
+{% block title %}Log in{% endblock %}
 {% block pagecontent %}
     {{ flashedmessages() }}
     <div id="login-form">
-        <h4 class="aligncenter">Iniciar sesión</h4>
+        <h4 class="aligncenter">Log in</h4>
         <form action="login" method="post">
             <input type="text" name="user" placeholder="Nombre de usuario" autofocus />
             <input type="password" name="pass" placeholder="Clave" />

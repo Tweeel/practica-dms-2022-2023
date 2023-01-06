@@ -5,6 +5,7 @@ from typing import Dict
 from sqlalchemy import Table, MetaData, Column, String , Integer ,ForeignKey # type: ignore
 from sqlalchemy.orm import relationship  # type: ignore
 from dms2223backend.data.db.results.resultbase import ResultBase
+from dms2223backend.data.db.results.reportanswer import Reportanswer
 from dms2223backend.data.db.results.comment import Comment
 
 class Answer(ResultBase):
@@ -44,8 +45,8 @@ class Answer(ResultBase):
             metadata,
             Column('id', Integer, autoincrement='auto', primary_key=True),
             Column('discussionid', Integer, ForeignKey('discussions.id'), nullable=False),
-            # Column('user', String, nullable=False),
             Column('content', String(250), nullable=False)
+            # Column('user', String, nullable=False),
             # Column('time', TIME, nullable = False),
             # Column('date', DATE, nullable = False)
         )
@@ -58,8 +59,6 @@ class Answer(ResultBase):
             - Dict: A dictionary with the mapping properties.
         """
         return {
-            'answers': relationship(Comment, backref='answer')
+            'answers': relationship(Comment, backref='answer'),
+            'reportanswer': relationship(Reportanswer , backref="answer")
         }
-
-
-    

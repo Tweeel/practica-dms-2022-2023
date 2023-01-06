@@ -7,14 +7,15 @@
         <input type="hidden" name="discussionid" value="{{ discussion['id'] }}" />
         <dl>
             <h3><dt>{{ discussion['title'] }}</dt></h3>
+           
             <p>{{ discussion['content'] }}</p>
 
-            <h3><dt>Respuesta</dt></h3>
+            <h3><dt>Reply</dt></h3>
             <dd>
                 <textarea name="content" rows="20" cols="100" placeholder="Escribe la respuesta..."></textarea>
             </dd>
             
         </dl>
-        <p class="alignright">{{ submit_button('bluebg', 'Guardar cambios') }}{{ button('redbg', redirect_to, 'Cancelar') }}</p>
+        <p class="alignright">{{ submit_button('bluebg', 'Save Changes') }}{{ button('redbg', redirect_to, 'Cancel') }}</p>
     </form>
 {% endblock %}

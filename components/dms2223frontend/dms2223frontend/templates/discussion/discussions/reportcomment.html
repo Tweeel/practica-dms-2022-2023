@@ -2,21 +2,26 @@
 {% from "macros/buttons.html" import button, submit_button %}
 {% block contentsubheading %}Create new report{% endblock %}
 {% block discussioncontent %}
-    <form action="/discussion/discussions/report" method="post">
+    <form action="/discussion/discussions/reportcomment" method="post">
         <input type="hidden" name="redirect_to" value="{{ redirect_to }}" />
         <input type="hidden" name="discussionid" value="{{ discussionid }}" />
-
+        <input type="hidden" name="answerid" value="{{ answerid }}" />
+        <input type="hidden" name="commentid" value="{{ commentid }}" />
         <dl>
-            <h3><dt>{{ discussion }}</dt></h3>
-        {{discussionid}}
+        <p>cid</p>
+            {% for comment in comments %}
+        {{comment}}
+        {%if commentid == comment['id']%}
+        {{answerid}} {{comment['answerid']}} 
 		<dt><p>Tell us what happens</p></dt>
             <dd>
                 <textarea name="reason" rows="15" cols="100"></textarea>
                 <var name="tiporeport" value="1">1</var>
             </dd>
-            
+        {%endif%}
+        {%endfor%}
             
         </dl>
-        <p class="alignright">{{ submit_button('bluebg', 'Send report') }}{{ button('redbg', redirect_to, 'Cancel') }}</p>
+        <p class="alignright">{{ submit_button('bluebg', 'Send report') }}{{ button('redbg', redirect_to, 'cancel') }}</p>
     </form>
 {% endblock %}

@@ -50,7 +50,15 @@ class AnswerLogic():
             - List[List]: A list of `Discussion` registers.
         """
         return Answers.list_all(session)
-
+        # answers = Answers.list_all(session)
+        # list_of_answers : List[List] = []
+        # for answer in answers:
+        #     if (Comments.answer_has_comments(session, discussion.id)): #type: ignore
+        #         list_of_answers.append([answer,1])
+        #     else:
+        #         list_of_answers.append([answer,0])
+        # return list_of_answers
+    
     @staticmethod
     def list_all_for_discussion(discussionid: int, session: Session) -> List[Answer]:
         """Lists the `answers made to a certain question.
@@ -66,7 +74,6 @@ class AnswerLogic():
             - List[Answer]: A list of answer registers with the question answers.
         """
         return Answers.list_all_for_discussion(session, discussionid)
-    
     
     @staticmethod
     def get_answer(session: Session ,discussionid: int) -> Answer:
@@ -85,3 +92,14 @@ class AnswerLogic():
         except Exception as ex:
             raise ex
         return answer
+
+        # list_of_answers = []
+        # try:
+        #     answer: Answer = Answers.get_answer(session, discussionid)
+        #     if (Comments.answer_has_comments(session, discussionid)):
+        #         list_of_answers.append([answer, 1])
+        #     else:
+        #         list_of_answers.append([answer, 0])
+        # except Exception as ex:
+        #     raise ex
+        # return list_of_answers

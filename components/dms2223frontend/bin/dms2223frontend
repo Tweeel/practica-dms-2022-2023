@@ -75,6 +75,26 @@ def get_discussion_discussions_report():
 @app.route("/discussion/discussions/report", methods=['POST'])
 def post_discussion_discussions_report():
     return DiscussionEndpoints.post_discussion_discussions_report(auth_service, backend_service)
+#
+@app.route("/discussion/discussions/reportanswer", methods=['POST'])
+def post_discussion_discussions_reportanswer():
+    return DiscussionEndpoints.post_discussion_discussions_reportanswer(auth_service, backend_service)
+
+@app.route("/discussion/discussions/reportanswer", methods=['GET'])
+def get_discussion_discussions_reportanswer():
+    return DiscussionEndpoints.get_discussion_discussions_reportanswer(auth_service, backend_service)
+
+@app.route("/discussion/discussions/reportcomment", methods=['GET'])
+def get_discussion_discussions_reportcomment():
+    return DiscussionEndpoints.get_discussion_discussions_reportcomment(auth_service, backend_service)
+
+@app.route("/discussion/discussions/reportcomment", methods=['POST'])
+def post_discussion_discussions_reportcomment():
+    return DiscussionEndpoints.post_discussion_discussions_reportcomment(auth_service, backend_service)
+
+
+#
+
 
 @app.route("/discussion/discussions/view", methods=['GET'])
 def get_discussion_discussions_view():
@@ -106,11 +126,11 @@ def get_moderator():
 
 @app.route("/moderator/reports", methods=['GET'])
 def get_moderator_reports():
-    return ModeratorEndpoints.get_moderator_reports(auth_service)
+    return ModeratorEndpoints.get_moderator_reports(auth_service,backend_service)
 
 @app.route("/moderator/moderator/view", methods=['GET'])
 def get_report_view():
-    return ModeratorEndpoints.get_report_view(auth_service)
+    return ModeratorEndpoints.get_report_view(auth_service,backend_service)
 
 @app.route("/moderator/moderator/resolution", methods=['GET'])
 def get_moderator_resolution_report():

@@ -4,4 +4,6 @@
 from .discussion import Discussion
 from .answer import Answer
 from .comment import Comment
-
+from .report import Report
+from .reportanswer import Reportanswer
+from .reportcomment import Reportcomment

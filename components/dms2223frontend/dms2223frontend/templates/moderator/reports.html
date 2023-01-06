@@ -1,18 +1,42 @@
 {% extends "moderator.html" %}
 {% from "macros/buttons.html" import button, submit_button %}
 {% block title %}{% block subtitle %}{% endblock %}Moderator{% endblock %}
-{% block contentheading %}Gestión de moderadores{% endblock %}
+{% block contentheading %}Moderator management{% endblock %}
 {% block moderatorcontent %}
-    <table class="fillwidth highlightrows">
+
+<style type = "text/css">
+     tr,td{
+        border: 1px solid black;
+    }
+</style>
+    <table class="fillwidth highlightrows" style="width:100%">
         <tbody>
-            <tr>
-                <th class="alignleft">Título del informe</th><th></th>
-            </tr>
+
+            
+            <p><b>Reportes de discusiones</b></p>
+            <table>
             {% for report in reports %}
                 <tr class="highlightable">
-                    <td class="alignleft">{{ button('grayBg', '/moderator/moderator/view?reporttitle=' + report['title'] + '&redirect_to=/moderator/moderator', report['title']) }}</td>
+                    <td style="padding: 1em;">
+                        <ul>
+                            <li><p>Discussion id: {{ report['discussionid'] }}</p></li>
+                            <li><p>Discussion report id: {{ report['id'] }}</p></li>
+                            <li><p>Reason for the report: {{ report['reason']}}</p></li>
+                            <li><p>Date and time of the report: {{ report['timestamp']}}</p></li>
+                            <li><p>Status: {{ report['status']}}</p></li>
+                        </ul>
+                    </td>
+                    <td style="padding: 1em;">
+                        <div>
+                            {{submit_button('bluebg','Accept')}}
+                        </div>
+                        <div>
+                            {{submit_button('redbg','Refuse')}}
+                        </div>
+                    </td>
                 </tr>
             {% endfor %}
+            </table>
 
         </tbody>
     </table>
