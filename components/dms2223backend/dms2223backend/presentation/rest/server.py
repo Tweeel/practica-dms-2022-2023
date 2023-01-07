@@ -1,9 +1,9 @@
 """ REST API controllers responsible of handling the server operations.
 """
 
-from typing import Dict, Tuple, Optional
+from typing import Tuple, Optional
 from http import HTTPStatus
-from flask import current_app
+
 
 def health_test() -> Tuple[None, Optional[int]]:
     """Simple health test endpoint.

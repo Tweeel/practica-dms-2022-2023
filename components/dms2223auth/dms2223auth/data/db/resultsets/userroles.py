@@ -34,7 +34,8 @@ class UserRoles():
         """
         if not username or not role:
             raise ValueError('A username and a role name are required.')
-        user_role: Optional[UserRole] = UserRoles.find_role(session, username, role)
+        user_role: Optional[UserRole] = UserRoles.find_role(
+            session, username, role)
         if user_role is not None:
             return user_role
         try:
@@ -66,7 +67,8 @@ class UserRoles():
         """
         if not username or not role:
             raise ValueError('A username and a role name are required.')
-        user_role: Optional[UserRole] = UserRoles.find_role(session, username, role)
+        user_role: Optional[UserRole] = UserRoles.find_role(
+            session, username, role)
         if user_role is None:
             return
         try:

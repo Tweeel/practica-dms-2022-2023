@@ -1,9 +1,7 @@
 """ REST API controllers responsible of handling the security schemas.
 """
 
-import json
-import time
-from typing import Dict, Optional
+from typing import Dict
 from flask import current_app
 import requests
 from connexion.exceptions import Unauthorized  # type: ignore
@@ -27,7 +25,6 @@ def verify_api_key(token: str) -> Dict:
         if not token in cfg.get_authorized_api_keys():
             raise Unauthorized('Invalid API key')
     return {}
-
 
 
 def verify_token(token: str) -> bool:

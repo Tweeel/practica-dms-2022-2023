@@ -3,14 +3,15 @@
 
 from typing import List, Dict
 from sqlalchemy.orm.session import Session  # type: ignore
-from dms2223backend.data.rest import AuthService
 from dms2223backend.data.db import Schema
 from dms2223backend.data.db.results import Comment
 from dms2223backend.logic import CommentLogic
 
+
 class CommentsServices():
     """ Monostate class that provides high-level services to handle user-related use cases.
     """
+
     @staticmethod
     def comment(discussionid: int, answerid: int, content: str, schema: Schema) -> Dict:
         """Comments an answer.
@@ -22,14 +23,15 @@ class CommentsServices():
         Returns:
             - Dict: Dictonary that contains the answer's data.
         """
-      
+
         session: Session = schema.new_session()
         out: Dict = {}
         try:
-            new_comment: Comment = CommentLogic.comment(session, discussionid, answerid, content)
-            
-            out['id'] = new_comment.id #type: ignore
-            out['discussionid'] = new_comment.discussionid 
+            new_comment: Comment = CommentLogic.comment(
+                session, discussionid, answerid, content)
+
+            out['id'] = new_comment.id  # type: ignore
+            out['discussionid'] = new_comment.discussionid
             out['answerid'] = new_comment.answerid
             out['content'] = new_comment.content
 
@@ -52,10 +54,11 @@ class CommentsServices():
         """
         out: List[Dict] = []
         session: Session = schema.new_session()
-        comments: List[Comment] = CommentLogic.list_all_for_discussion(discussionid, session)
+        comments: List[Comment] = CommentLogic.list_all_for_discussion(
+            discussionid, session)
         for comment in comments:
             out.append({
-                'id': comment.id, #type: ignore
+                'id': comment.id,  # type: ignore
                 'discussionid': comment.discussionid,
                 'answerid': comment.answerid,
                 'content': comment.content
@@ -76,10 +79,11 @@ class CommentsServices():
         """
         out: List[Dict] = []
         session: Session = schema.new_session()
-        comments: List[Comment] = CommentLogic.list_all_for_answer(answerid, session)
+        comments: List[Comment] = CommentLogic.list_all_for_answer(
+            answerid, session)
         for comment in comments:
             out.append({
-                'id': comment.id, #type: ignore
+                'id': comment.id,  # type: ignore
                 'discussionid': comment.discussionid,
                 'answerid': comment.answerid,
                 'content': comment.content
@@ -94,16 +98,18 @@ class CommentsServices():
         Args:
             - username (str): Username string.
             - id: Discussion id.
-            - token_info (Dict): A dictionary of information provided by the security schema handlers.
+            - token_info (Dict): A dictionary of information
+              provided by the security schema handlers.
 
         Returns:
             - Dict: Comment of the answer.
         """
         session: Session = schema.new_session()
         out: Dict = {}
-        comment: Comment = CommentLogic.get_comment(session, discussionid, answerid)
-        out['id'] = comment.id #type: ignore
-        out['discussionid'] = comment.discussionid #type: ignore
+        comment: Comment = CommentLogic.get_comment(
+            session, discussionid, answerid)
+        out['id'] = comment.id  # type: ignore
+        out['discussionid'] = comment.discussionid  # type: ignore
         out['answerid'] = comment.answerid
         out['content'] = comment.content
         schema.remove_session()

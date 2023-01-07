@@ -1,9 +1,8 @@
 """ AuthService class module.
 """
 
-from typing import List, Optional, Union
+from typing import Optional
 import requests
-from dms2223common.data import Role
 from dms2223common.data.rest import ResponseData
 
 

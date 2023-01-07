@@ -8,6 +8,7 @@ from dms2223backend.data.db.exc import DiscussionNotFoundError
 from dms2223backend.logic.exc.operationerror import OperationError
 from dms2223backend.service import CommentsServices
 
+
 def comment(body: Dict, id: int) -> Tuple[Union[Dict, str], Optional[int]]:
     """Comments a discussion if the requestor has the discussion role.
 
@@ -30,9 +31,10 @@ def comment(body: Dict, id: int) -> Tuple[Union[Dict, str], Optional[int]]:
         except ValueError:
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)
         except DiscussionNotFoundError:
-            return('User does not exist', HTTPStatus.NOT_FOUND.value)
+            return ('User does not exist', HTTPStatus.NOT_FOUND.value)
         except OperationError:
-            return ('The user with the given username can not create a discussion', HTTPStatus.FORBIDDEN.value)
+            return ('The user with the given username can not create a discussion',
+                    HTTPStatus.FORBIDDEN.value)
     return (comment, HTTPStatus.OK.value)
 
 
@@ -44,8 +46,9 @@ def list_all_for_discussion(id: int) -> Tuple[Union[List[Dict], str], Optional[i
         - token_info (Dict): A dictionary of information provided by the security schema handlers.
 
     Returns:
-        - Tuple[Union[List[Dict], str], Optional[int]]: On success, a tuple with the dictionary of the
-          new discussion data and a code 200 OK. On error, a description message and code:
+        - Tuple[Union[List[Dict], str], Optional[int]]: On success,
+          a tuple with the dictionary of the new discussion data
+          and a code 200 OK. On error, a description message and code:
             - 400 BAD REQUEST when a mandatory argument is missing.
     """
     with current_app.app_context():
@@ -67,8 +70,9 @@ def list_all_for_answer(id: int) -> Tuple[Union[List[Dict], str], Optional[int]]
         - token_info (Dict): A dictionary of information provided by the security schema handlers.
 
     Returns:
-        - Tuple[Union[List[Dict], str], Optional[int]]: On success, a tuple with the dictionary of the
-          new discussion data and a code 200 OK. On error, a description message and code:
+        - Tuple[Union[List[Dict], str], Optional[int]]: On success,
+          a tuple with the dictionary of the new discussion data
+          and a code 200 OK. On error, a description message and code:
             - 400 BAD REQUEST when a mandatory argument is missing.
     """
     with current_app.app_context():
@@ -80,6 +84,7 @@ def list_all_for_answer(id: int) -> Tuple[Union[List[Dict], str], Optional[int]]
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)
 
     return (comments, HTTPStatus.OK.value)
+
 
 def get_comment(discussionid: int, answerid: int) -> Tuple[Union[Dict, str], Optional[int]]:
     """Obtains the comment of a discussion and user.
@@ -97,7 +102,7 @@ def get_comment(discussionid: int, answerid: int) -> Tuple[Union[Dict, str], Opt
     with current_app.app_context():
         try:
             comment: Dict = CommentsServices.get_comment(
-                discussionid, answerid,current_app.db
+                discussionid, answerid, current_app.db
             )
         except ValueError:
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)

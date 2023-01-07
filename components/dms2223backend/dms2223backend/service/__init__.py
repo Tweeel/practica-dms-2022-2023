@@ -3,4 +3,4 @@
 from .discussionservices import DiscussionsServices
 from .answerservices import AnswersServices
 from .commentservices import CommentsServices
-from .moderateservices import reportsServices
+from .moderateservices import ReportsServices

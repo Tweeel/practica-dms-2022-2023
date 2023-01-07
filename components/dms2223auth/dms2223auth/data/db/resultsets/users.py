@@ -42,7 +42,7 @@ class Users():
         except IntegrityError as ex:
             raise UserExistsError(
                 'A user with name ' + username + ' already exists.'
-                ) from ex
+            ) from ex
 
     @staticmethod
     def list_all(session: Session) -> List[User]:
@@ -70,7 +70,8 @@ class Users():
             - bool: `True` if a user with the given credentials exists; `False` otherwise.
         """
         try:
-            query = session.query(User).filter_by(username=username, password=password_hash)
+            query = session.query(User).filter_by(
+                username=username, password=password_hash)
             query.one()
         except NoResultFound:
             return False

@@ -5,40 +5,46 @@ from typing import Tuple, Union, Optional, List, Dict
 from http import HTTPStatus
 from flask import current_app
 from dms2223backend.logic.exc.operationerror import OperationError
-from dms2223backend.service import reportsServices
+from dms2223backend.service import ReportsServices
+
 
 def list_reports() -> Tuple[List[Dict], Optional[int]]:
     """Lists the existing reports.
 
     Returns:
-        - Tuple[List[Dict], Optional[int]]: A tuple with a list of dictionaries for the reports' data
-          and a code 200 OK.
+        - Tuple[List[Dict], Optional[int]]: A tuple with a list of
+            dictionaries for the reports' data and a code 200 OK.
     """
     with current_app.app_context():
-        reports: List[Dict] = reportsServices.list_reports(current_app.db)
+        reports: List[Dict] = ReportsServices.list_reports(current_app.db)
     return (reports, HTTPStatus.OK.value)
+
 
 def list_reports_answer() -> Tuple[List[Dict], Optional[int]]:
     """Lists the existing reports.
 
     Returns:
-        - Tuple[List[Dict], Optional[int]]: A tuple with a list of dictionaries for the reports' data
-          and a code 200 OK.
+        - Tuple[List[Dict], Optional[int]]: A tuple with a list of
+            dictionaries for the reports' data and a code 200 OK.
     """
     with current_app.app_context():
-        reports: List[Dict] = reportsServices.list_reports_answer(current_app.db)
+        reports: List[Dict] = ReportsServices.list_reports_answer(
+            current_app.db)
     return (reports, HTTPStatus.OK.value)
+
 
 def list_reports_comments() -> Tuple[List[Dict], Optional[int]]:
     """Lists the existing reports.
 
     Returns:
-        - Tuple[List[Dict], Optional[int]]: A tuple with a list of dictionaries for the reports' data
-          and a code 200 OK.
+        - Tuple[List[Dict], Optional[int]]: A tuple with a list of
+            dictionaries for the reports' data and a code 200 OK.
     """
     with current_app.app_context():
-        reports: List[Dict] = reportsServices.list_reports_comments(current_app.db)
+        reports: List[Dict] = ReportsServices.list_reports_comments(
+            current_app.db)
     return (reports, HTTPStatus.OK.value)
+
 
 def create_report(body: Dict) -> Tuple[Union[Dict, str], Optional[int]]:
     """Creates a report if the requestor has the report role.
@@ -56,17 +62,19 @@ def create_report(body: Dict) -> Tuple[Union[Dict, str], Optional[int]]:
     """
     with current_app.app_context():
         try:
-            
-            report: Dict = reportsServices.create_report(
-                body['tiporeport'],body['title'],body['content'],current_app.db
+
+            report: Dict = ReportsServices.create_report(
+                body['tiporeport'], body['title'], body['content'], current_app.db
             )
         except ValueError:
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)
         except OperationError:
-            return ('The user with the given username can not create a report', HTTPStatus.FORBIDDEN.value)
+            return ('The user with the given username can not create a report',
+                    HTTPStatus.FORBIDDEN.value)
     return (report, HTTPStatus.OK.value)
 
-def create_comment_report(body: Dict, id: int ) -> Tuple[Union[Dict, str], Optional[int]]:
+
+def create_comment_report(body: Dict, id: int) -> Tuple[Union[Dict, str], Optional[int]]:
     """Creates a report if the requestor has the report role.
 
     Args:
@@ -82,16 +90,18 @@ def create_comment_report(body: Dict, id: int ) -> Tuple[Union[Dict, str], Optio
     """
     with current_app.app_context():
         try:
-            report: Dict = reportsServices.create_report_comment(
-                id,body['reason'],current_app.db
+            report: Dict = ReportsServices.create_report_comment(
+                id, body['reason'], current_app.db
             )
         except ValueError:
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)
         except OperationError:
-            return ('The user with the given username can not create a report', HTTPStatus.FORBIDDEN.value)
+            return ('The user with the given username can not create a report',
+                    HTTPStatus.FORBIDDEN.value)
     return (report, HTTPStatus.OK.value)
 
-def create_answer_report(body: Dict, id: int ) -> Tuple[Union[Dict, str], Optional[int]]:
+
+def create_answer_report(body: Dict, id: int) -> Tuple[Union[Dict, str], Optional[int]]:
     """Creates a report if the requestor has the report role.
 
     Args:
@@ -107,16 +117,18 @@ def create_answer_report(body: Dict, id: int ) -> Tuple[Union[Dict, str], Option
     """
     with current_app.app_context():
         try:
-            report: Dict = reportsServices.create_report_answer(
-                id,body['reason'],current_app.db
+            report: Dict = ReportsServices.create_report_answer(
+                id, body['reason'], current_app.db
             )
         except ValueError:
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)
         except OperationError:
-            return ('The user with the given username can not create a report', HTTPStatus.FORBIDDEN.value)
+            return ('The user with the given username can not create a report',
+                    HTTPStatus.FORBIDDEN.value)
     return (report, HTTPStatus.OK.value)
 
-def create_report(body: Dict, id: int ) -> Tuple[Union[Dict, str], Optional[int]]:
+
+def create_report(body: Dict, id: int) -> Tuple[Union[Dict, str], Optional[int]]:
     """Creates a report if the requestor has the report role.
 
     Args:
@@ -132,14 +144,16 @@ def create_report(body: Dict, id: int ) -> Tuple[Union[Dict, str], Optional[int]
     """
     with current_app.app_context():
         try:
-            report: Dict = reportsServices.create_report(
-                id,body['reason'],current_app.db
+            report: Dict = ReportsServices.create_report(
+                id, body['reason'], current_app.db
             )
         except ValueError:
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)
         except OperationError:
-            return ('The user with the given username can not create a report', HTTPStatus.FORBIDDEN.value)
+            return ('The user with the given username can not create a report',
+                    HTTPStatus.FORBIDDEN.value)
     return (report, HTTPStatus.OK.value)
+
 
 def get_report_by_id(id: int) -> Tuple[Union[Dict, str], Optional[int]]:
     """Get a report by id.
@@ -154,8 +168,8 @@ def get_report_by_id(id: int) -> Tuple[Union[Dict, str], Optional[int]]:
     """
     with current_app.app_context():
         try:
-            report: Dict = reportsServices.get_report_by_id(
-               id, current_app.db
+            report: Dict = ReportsServices.get_report_by_id(
+                id, current_app.db
             )
         except ValueError:
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)

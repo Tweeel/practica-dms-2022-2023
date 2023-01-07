@@ -1,11 +1,9 @@
 """ Answers class module.
 """
 
-import hashlib
 from typing import List
 from sqlalchemy.exc import IntegrityError  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
-from sqlalchemy.orm.exc import NoResultFound  # type: ignore
 from dms2223backend.data.db.results import Answer
 from dms2223backend.data.db.exc.discussionnotfounderror import DiscussionNotFoundError
 

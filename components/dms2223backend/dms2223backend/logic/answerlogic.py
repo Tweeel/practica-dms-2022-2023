@@ -4,8 +4,7 @@
 from typing import List
 from sqlalchemy.orm.session import Session  # type: ignore
 from dms2223backend.data.db.results import Answer
-from dms2223backend.data.db.resultsets import Answers, Comments
-
+from dms2223backend.data.db.resultsets import Answers
 
 
 class AnswerLogic():
@@ -34,7 +33,7 @@ class AnswerLogic():
 
         try:
             new_answer: Answer = Answers.answer(session, discussionid, content)
-           
+
         except Exception as ex:
             raise ex
         return new_answer
@@ -58,7 +57,7 @@ class AnswerLogic():
         #     else:
         #         list_of_answers.append([answer,0])
         # return list_of_answers
-    
+
     @staticmethod
     def list_all_for_discussion(discussionid: int, session: Session) -> List[Answer]:
         """Lists the `answers made to a certain question.
@@ -74,9 +73,9 @@ class AnswerLogic():
             - List[Answer]: A list of answer registers with the question answers.
         """
         return Answers.list_all_for_discussion(session, discussionid)
-    
+
     @staticmethod
-    def get_answer(session: Session ,discussionid: int) -> Answer:
+    def get_answer(session: Session, discussionid: int) -> Answer:
         """Return a answer of a certain question and user.
 
         Args:

@@ -3,7 +3,6 @@
 
 from typing import List, Dict
 from sqlalchemy.orm.session import Session  # type: ignore
-from dms2223backend.data.rest import AuthService
 from dms2223backend.data.db import Schema
 from dms2223backend.data.db.results import Discussion
 from dms2223backend.logic import DiscussionLogic

@@ -1,17 +1,17 @@
 """report Class Module
 """
 
-from typing import Dict
-from sqlalchemy import Table, MetaData, Column,func ,DateTime,String , Enum,Integer, TIME, DATE ,ForeignKey# type: ignore
-from sqlalchemy.orm import relationship  # type: ignore
+from sqlalchemy import Table, MetaData, Column, \
+    func, DateTime, String, Enum, Integer, ForeignKey  # type: ignore
 from dms2223backend.data.db.results.resultbase import ResultBase
 from dms2223backend.data.reportstatus import ReportStatus
+
 
 class Reportanswer(ResultBase):
     """ Definition and storage of report ORM records.
     """
 
-    def __init__(self, answerid:int ,reason: str,status:ReportStatus):
+    def __init__(self, answerid: int, reason: str, status: ReportStatus):
         """ Constructor method.
 
         Initializes a report record.
@@ -20,7 +20,6 @@ class Reportanswer(ResultBase):
             - title (str): A string with the report title.
             - content (str): A string with the report title.
         """
-
 
         self.reason: str = reason
         self.answerid: int = answerid
@@ -43,9 +42,9 @@ class Reportanswer(ResultBase):
             metadata,
             Column('id', Integer, autoincrement='auto', primary_key=True),
             Column('reason', String(250), nullable=False),
-            Column('answerid', Integer, ForeignKey('answers.id'), nullable=False),
-            Column('status',Enum(ReportStatus),default = ReportStatus.PENDING ,nullable = False),
-            Column('timestamp', DateTime, nullable=False, default = func.now())
-            #Column('user', String(15), nullable=False),
-            #Column('date', DATE, nullable = False)
+            Column('answerid', Integer, ForeignKey(
+                'answers.id'), nullable=False),
+            Column('status', Enum(ReportStatus),
+                   default=ReportStatus.PENDING, nullable=False),
+            Column('timestamp', DateTime, nullable=False, default=func.now())
         )

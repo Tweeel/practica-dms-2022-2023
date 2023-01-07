@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: DMS authentication service REST API
-  version: '1.0'
+  version: "1.0"
   description: |
     REST API for the authentication service.
 
@@ -23,13 +23,13 @@ tags:
 servers:
   - url: /api/v1
 paths:
-  '/':
+  "/":
     head:
       summary: Health test for the service
       operationId: dms2223auth.presentation.rest.server.health_test
       responses:
-        '204':
-          $ref: '#/components/responses/Empty'
+        "204":
+          $ref: "#/components/responses/Empty"
       tags:
         - server
   /auth:
@@ -39,12 +39,12 @@ paths:
         This operation returns the data of the user associated to the token.
       operationId: dms2223auth.presentation.rest.server.get_token_owner
       responses:
-        '200':
+        "200":
           description: Owner of the token
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/UserFullModel'
+                $ref: "#/components/schemas/UserFullModel"
               example:
                 username: user1
       tags:
@@ -67,13 +67,13 @@ paths:
         the `user_token` security scheme).
       operationId: dms2223auth.presentation.rest.server.login
       responses:
-        '200':
+        "200":
           description: JWS token
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjogImFkbWluIiwgInN1YiI6ICJhZG1pbiIsICJleHAiOiAxNjY1ODgwNjM5LjI4ODEyNjV9.zClfXKR57La5mTXeBWR0JrB7ywmz9sG_cL3RCHYPDlY'
+              example: "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjogImFkbWluIiwgInN1YiI6ICJhZG1pbiIsICJleHAiOiAxNjY1ODgwNjM5LjI4ODEyNjV9.zClfXKR57La5mTXeBWR0JrB7ywmz9sG_cL3RCHYPDlY"
       tags:
         - session
       security:
@@ -88,12 +88,12 @@ paths:
         This method returns a listing of users.
       operationId: dms2223auth.presentation.rest.user.list_users
       responses:
-        '200':
+        "200":
           description: A list of users.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/UsersFullListModel'
+                $ref: "#/components/schemas/UsersFullListModel"
               example:
                 - username: user1
                 - username: user2
@@ -110,29 +110,29 @@ paths:
       requestBody:
         description: New user's data.
         content:
-          'application/json':
+          "application/json":
             schema:
-              $ref: '#/components/schemas/UserFullPasswordModel'
+              $ref: "#/components/schemas/UserFullPasswordModel"
             example:
               - username: user1
-                password: '1234ABCdef!!'
+                password: "1234ABCdef!!"
       responses:
-        '201':
+        "201":
           description: Data of the newly created user (password hash is not returned).
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/UserFullModel'
+                $ref: "#/components/schemas/UserFullModel"
               example:
                 username: user1
-        '400':
-          $ref: '#/components/responses/GenericBadRequest'
-        '403':
-          $ref: '#/components/responses/UnauthorizedUser'
-        '409':
+        "400":
+          $ref: "#/components/responses/GenericBadRequest"
+        "403":
+          $ref: "#/components/responses/UnauthorizedUser"
+        "409":
           description: There is a conflict with some of the user's unique data.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
               example: A user with the given username already exists
@@ -148,12 +148,12 @@ paths:
         Gets a list of roles assigned to the given user.
       operationId: dms2223auth.presentation.rest.userrole.list_user_roles
       parameters:
-        - $ref: '#/components/parameters/UsernamePathParam'
+        - $ref: "#/components/parameters/UsernamePathParam"
       responses:
-        '200':
+        "200":
           description: The list of roles of the user
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
@@ -161,14 +161,14 @@ paths:
               example:
                 - ADMINISTRATION
                 - MODERATION
-        '400':
+        "400":
           description: A user was not provided.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-        '403':
-          $ref: '#/components/responses/UnauthorizedUser'
+        "403":
+          $ref: "#/components/responses/UnauthorizedUser"
       tags:
         - users
         - roles
@@ -183,25 +183,25 @@ paths:
         certain role.
       operationId: dms2223auth.presentation.rest.userrole.user_has_role
       parameters:
-        - $ref: '#/components/parameters/UsernamePathParam'
-        - $ref: '#/components/parameters/RolenamePathParam'
+        - $ref: "#/components/parameters/UsernamePathParam"
+        - $ref: "#/components/parameters/RolenamePathParam"
       responses:
-        '204':
+        "204":
           description: The given user has the given role.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: ''
-        '404':
+              example: ""
+        "404":
           description: |
             The given user does not have the given role, or either the user or
             the role does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: ''
+              example: ""
       tags:
         - users
         - roles
@@ -214,29 +214,29 @@ paths:
         Use this operation to grant a role to a user.
       operationId: dms2223auth.presentation.rest.userrole.grant_role
       parameters:
-        - $ref: '#/components/parameters/UsernamePathParam'
-        - $ref: '#/components/parameters/RolenamePathParam'
+        - $ref: "#/components/parameters/UsernamePathParam"
+        - $ref: "#/components/parameters/RolenamePathParam"
       responses:
-        '201':
+        "201":
           description: The given user has been granted the role.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: ''
-        '400':
+              example: ""
+        "400":
           description: A mandatory parameter was not given.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
               example: Both a username and a role name must be given
-        '403':
-          $ref: '#/components/responses/UnauthorizedUser'
-        '404':
+        "403":
+          $ref: "#/components/responses/UnauthorizedUser"
+        "404":
           description: The given user does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
               example: User user1 was not found
@@ -252,25 +252,25 @@ paths:
         Use this operation to revoke a role from a user.
       operationId: dms2223auth.presentation.rest.userrole.revoke_role
       parameters:
-        - $ref: '#/components/parameters/UsernamePathParam'
-        - $ref: '#/components/parameters/RolenamePathParam'
+        - $ref: "#/components/parameters/UsernamePathParam"
+        - $ref: "#/components/parameters/RolenamePathParam"
       responses:
-        '204':
+        "204":
           description: The given user has been revoked the role.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: ''
-        '400':
+              example: ""
+        "400":
           description: A mandatory parameter was not given.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
               example: Both a username and a role name must be given
-        '403':
-          $ref: '#/components/responses/UnauthorizedUser'
+        "403":
+          $ref: "#/components/responses/UnauthorizedUser"
       tags:
         - users
         - roles
@@ -288,7 +288,7 @@ components:
         - username
     UserFullPasswordModel:
       allOf:
-        - $ref: '#/components/schemas/UserFullModel'
+        - $ref: "#/components/schemas/UserFullModel"
         - type: object
           properties:
             password:
@@ -298,7 +298,7 @@ components:
     UsersFullListModel:
       type: array
       items:
-        $ref: '#/components/schemas/UserFullModel'
+        $ref: "#/components/schemas/UserFullModel"
     RoleModel:
       type: string
       enum:
@@ -322,28 +322,28 @@ components:
       in: path
       required: true
       schema:
-        $ref: '#/components/schemas/RoleModel'
+        $ref: "#/components/schemas/RoleModel"
   responses:
     GenericBadRequest:
       description: Errors in the request.
       content:
-        'text/plain':
+        "text/plain":
           schema:
             type: string
     UnauthorizedUser:
       description: The requesting user has no permission to do this operation.
       content:
-        'text/plain':
+        "text/plain":
           schema:
             type: string
           example: User X has no permission to perform this operation
     Empty:
       description: An empty content.
       content:
-        'text/plain':
+        "text/plain":
           schema:
-            $ref: '#/components/schemas/EmptyContentModel'
-          example: ''
+            $ref: "#/components/schemas/EmptyContentModel"
+          example: ""
   securitySchemes:
     user_credentials:
       description: |

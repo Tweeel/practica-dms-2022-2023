@@ -6,7 +6,8 @@ from sqlalchemy.engine import Engine  # type: ignore
 from sqlalchemy.orm import sessionmaker, scoped_session, registry  # type: ignore
 from sqlalchemy.orm.session import Session  # type: ignore
 from dms2223backend.data.config import BackendConfiguration
-from dms2223backend.data.db.results import Discussion, Answer, Comment, Report , Reportanswer , Reportcomment
+from dms2223backend.data.db.results import Discussion, Answer, Comment, \
+    Report, Reportanswer, Reportcomment
 
 
 # Required for SQLite to enforce FK integrity when supported
@@ -44,7 +45,8 @@ class Schema():
             )
         db_connection_string: str = config.get_db_connection_string() or ''
         self.__create_engine = create_engine(db_connection_string)
-        self.__session_maker = scoped_session(sessionmaker(bind=self.__create_engine))
+        self.__session_maker = scoped_session(
+            sessionmaker(bind=self.__create_engine))
 
         Discussion.map(self.__registry)
         Answer.map(self.__registry)

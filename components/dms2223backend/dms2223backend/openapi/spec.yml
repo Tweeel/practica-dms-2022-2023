@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: DMS backend service REST API
-  version: '1.0'
+  version: "1.0"
   description: |
     REST API for the backend service.
 
@@ -36,7 +36,7 @@ tags:
 servers:
   - url: /api/v1
 paths:
-  '/':
+  "/":
     head:
       summary: Health test for the service
       description: |
@@ -44,8 +44,8 @@ paths:
         API is reachable.
       operationId: dms2223backend.presentation.rest.server.health_test
       responses:
-        '204':
-          $ref: '#/components/responses/Empty'
+        "204":
+          $ref: "#/components/responses/Empty"
       tags:
         - server
   /discussions:
@@ -58,12 +58,12 @@ paths:
         should be fetched separately.
       operationId: dms2223backend.presentation.rest.discussion.list_discussions
       responses:
-        '200':
+        "200":
           description: A list of questions.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/QuestionsListModel'
+                $ref: "#/components/schemas/QuestionsListModel"
       tags:
         - discussions
       security:
@@ -79,64 +79,64 @@ paths:
       operationId: dms2223backend.presentation.rest.discussion.create_discussion
       requestBody:
         content:
-          'application/json':
+          "application/json":
             schema:
-              $ref: '#/components/schemas/QuestionCreationModel'
-            
+              $ref: "#/components/schemas/QuestionCreationModel"
+
       responses:
-        '201':
+        "201":
           description: Question created.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/QuestionFullModel'
-        '400':
+                $ref: "#/components/schemas/QuestionFullModel"
+        "400":
           description: Errors in requests.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
 
       tags:
         - discussions
-    
+
       security:
         - user_token: []
           api_key: []
-          
+
   /discussions/{id}:
     get:
       summary: Gets a single question
       operationId: dms2223backend.presentation.rest.discussion.get_discussion_by_id
       parameters:
-        - $ref: '#/components/parameters/QuestionIdPathParam'
+        - $ref: "#/components/parameters/QuestionIdPathParam"
       responses:
-        '200':
+        "200":
           description: The full data of a question.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/QuestionFullModel'
+                $ref: "#/components/schemas/QuestionFullModel"
               example:
                 id: 1
-                title: 'Recommended size for the work groups?'
-                body: 'Which is the recommended size for the work groups in your opinion?'
+                title: "Recommended size for the work groups?"
+                body: "Which is the recommended size for the work groups in your opinion?"
                 owner:
-                  username: 'user1'
+                  username: "user1"
                 timestamp: 1665574089.0
-        '404':
+        "404":
           description: The question does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: 'The question with qid 5 does not exist.'
+              example: "The question with qid 5 does not exist."
       tags:
         - discussion
       security:
         - user_token: []
           api_key: []
-  
+
   /discussions/{id}/answers:
     get:
       summary: Gets the answers for a question
@@ -144,14 +144,14 @@ paths:
         Fetches the full answers for a given question.
       operationId: dms2223backend.presentation.rest.answer.list_all_for_discussion
       parameters:
-        - $ref: '#/components/parameters/QuestionIdPathParam'
+        - $ref: "#/components/parameters/QuestionIdPathParam"
       responses:
-        '200':
+        "200":
           description: The answers for a question.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/AnswersListModel'
+                $ref: "#/components/schemas/AnswersListModel"
               example:
                 - id: 1
                   qid: 1
@@ -216,13 +216,13 @@ paths:
                         username: user4
                       votes: 0
                       user_votes: []
-        '404':
+        "404":
           description: The question does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: 'The question with qid 5 does not exist.'
+              example: "The question with qid 5 does not exist."
       tags:
         - discussion
         - answers
@@ -238,23 +238,23 @@ paths:
         user token against the authorization server.
       operationId: dms2223backend.presentation.rest.answer.answer
       parameters:
-        - $ref: '#/components/parameters/QuestionIdPathParam'
+        - $ref: "#/components/parameters/QuestionIdPathParam"
       requestBody:
         description: Answer data.
         content:
-          'application/json':
+          "application/json":
             schema:
-              $ref: '#/components/schemas/AnswerCreationModel'
+              $ref: "#/components/schemas/AnswerCreationModel"
             example:
               qid: 1
               body: I would suggest four members.
       responses:
-        '201':
+        "201":
           description: The created answer.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/AnswerFullModel'
+                $ref: "#/components/schemas/AnswerFullModel"
               example:
                 id: 1
                 qid: 1
@@ -265,13 +265,13 @@ paths:
                 votes: 0
                 user_votes: {}
                 comments: []
-        '404':
+        "404":
           description: The question does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: 'The question with qid 5 does not exist.'
+              example: "The question with qid 5 does not exist."
       tags:
         - discussion
         - answers
@@ -314,12 +314,12 @@ paths:
             type: boolean
             default: true
       responses:
-        '200':
+        "200":
           description: Listing of question reports
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/QuestionReportsListModel'
+                $ref: "#/components/schemas/QuestionReportsListModel"
               example:
                 - id: 1
                   qid: 2
@@ -360,21 +360,21 @@ paths:
         user token against the authorization server.
       operationId: dms2223backend.presentation.rest.moderate.create_report
       parameters:
-        - $ref: '#/components/parameters/QuestionIdPathParam'
+        - $ref: "#/components/parameters/QuestionIdPathParam"
       requestBody:
         content:
-          'application/json':
+          "application/json":
             schema:
-              $ref: '#/components/schemas/QuestionReportCreationModel'
+              $ref: "#/components/schemas/QuestionReportCreationModel"
             example:
               reason: Promotes hate speech
       responses:
-        '201':
+        "201":
           description: The created report.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/QuestionReportFullModel'
+                $ref: "#/components/schemas/QuestionReportFullModel"
               example:
                 id: 1
                 qid: 2
@@ -383,13 +383,13 @@ paths:
                 owner:
                   username: user4
                 timestamp: 1665922785
-        '404':
+        "404":
           description: The question does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: 'The question with qid 5 does not exist.'
+              example: "The question with qid 5 does not exist."
       tags:
         - discussion
         - moderation
@@ -399,141 +399,6 @@ paths:
         - user_token: []
           api_key: []
 
-  # /discussions/reports:
-  #   get:
-  #     summary: Get a list of question reports.
-  #     description: |
-  #       This operation gets a listing of question reports.
-
-  #       Several parameters can be used to filter out the reports according to
-  #       their status.
-  #     # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #     parameters:
-  #       - name: pending
-  #         description: |
-  #           Set to `false` to exclude the pending reports from the listing.
-  #         in: query
-  #         required: false
-  #         schema:
-  #           type: boolean
-  #           default: true
-  #       - name: accepted
-  #         description: |
-  #           Set to `false` to exclude the accepted reports from the listing.
-  #         in: query
-  #         required: false
-  #         schema:
-  #           type: boolean
-  #           default: true
-  #       - name: rejected
-  #         description: |
-  #           Set to `false` to exclude the rejected reports from the listing.
-  #         in: query
-  #         required: false
-  #         schema:
-  #           type: boolean
-  #           default: true
-  #     responses:
-  #       '200':
-  #         description: Listing of question reports
-  #         content:
-  #           'application/json':
-  #             schema:
-  #               $ref: '#/components/schemas/QuestionReportsListModel'
-  #             example:
-  #               - id: 1
-  #                 qid: 2
-  #                 reason: Promotes hate speech
-  #                 status: ACCEPTED
-  #                 owner:
-  #                   username: user4
-  #                 timestamp: 1665922785
-  #               - id: 2
-  #                 qid: 4
-  #                 reason: Not a question
-  #                 status: REJECTED
-  #                 owner:
-  #                   username: user5
-  #                 timestamp: 1665922785
-  #               - id: 3
-  #                 qid: 4
-  #                 reason: Question is too vague
-  #                 status: PENDING
-  #                 owner:
-  #                   username: user5
-  #                 timestamp: 1665922785
-  #     tags:
-  #       - moderation
-  #       - questions
-  #       - reports
-  #     security:
-  #       - user_token: []
-  #         api_key: []
-  # /discussions/reports/{qrid}:
-  #   put:
-  #     summary: Change the status of a question report
-  #     description: |
-  #       Use this operation to change the status of a question report.
-
-  #       When a report on a question is accepted, the linked question should be
-  #       hidden so neither the question nor its answers and comments are visible.
-  #     # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #     parameters:
-  #       - $ref: '#/components/parameters/QuestionReportIdPathParam'
-  #     requestBody:
-  #       content:
-  #         'application/json':
-  #           schema:
-  #             $ref: '#/components/schemas/ReportStatusChangeModel'
-  #           example:
-  #             status: ACCEPTED
-  #     responses:
-  #       '204':
-  #         $ref: '#/components/responses/ReportStatusChanged'
-  #       '404':
-  #         description: The question report does not exist.
-  #         content:
-  #           'text/plain':
-  #             schema:
-  #               type: string
-  #             example: 'The question report with qrid 25 does not exist.'
-  #     tags:
-  #       - moderation
-  #       - questions
-  #       - reports
-  #     security:
-  #       - user_token: []
-  #         api_key: []
-  # /answers/{aid}/votes:
-  #   post:
-  #     summary: Upvote an answer
-  #     description: |
-  #       This operation will cast a vote on an answer.
-
-  #       The user voting will be automatically retrieved from the user token
-  #       against the authorization server.
-  #     # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #     parameters:
-  #       - $ref: '#/components/parameters/AnswerIdPathParam'
-  #     responses:
-  #       '201':
-  #         $ref: '#/components/responses/VoteCast'
-  #       '404':
-  #         description: The answer does not exist.
-  #         content:
-  #           'text/plain':
-  #             schema:
-  #               type: string
-  #             example: 'The answer with aid 50 does not exist.'
-  #       '409':
-  #         $ref: '#/components/responses/VoteAlreadyCast'
-  #     tags:
-  #       - discussion
-  #       - answers
-  #       - votes
-  #     security:
-  #       - user_token: []
-  #         api_key: []
   /answers/{id}/comments:
     get:
       summary: Gets the comments for an answer
@@ -541,14 +406,14 @@ paths:
         Fetches the full answers for a given question.
       operationId: dms2223backend.presentation.rest.comment.list_all_for_discussion
       parameters:
-        - $ref: '#/components/parameters/AnswerIdPathParam'
+        - $ref: "#/components/parameters/AnswerIdPathParam"
       responses:
-        '200':
+        "200":
           description: The answers for a question.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/CommentsListModel'
+                $ref: "#/components/schemas/CommentsListModel"
               example:
                 - id: 1
                   qid: 1
@@ -613,13 +478,13 @@ paths:
                         username: user4
                       votes: 0
                       user_votes: []
-        '404':
+        "404":
           description: The question does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: 'The question with qid 5 does not exist.'
+              example: "The question with qid 5 does not exist."
       tags:
         - answer
         - comments
@@ -635,22 +500,22 @@ paths:
         token against the authorization server.
       operationId: dms2223backend.presentation.rest.comment.comment
       parameters:
-        - $ref: '#/components/parameters/AnswerIdPathParam'
+        - $ref: "#/components/parameters/AnswerIdPathParam"
       requestBody:
         content:
-          'application/json':
+          "application/json":
             schema:
-              $ref: '#/components/schemas/CommentCreationModel'
+              $ref: "#/components/schemas/CommentCreationModel"
             example:
               body: Evaluation criteria may be relaxed due to the tight number of members
               sentiment: POSITIVE
       responses:
-        '201':
+        "201":
           description: The created comment.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/CommentFullModel'
+                $ref: "#/components/schemas/CommentFullModel"
               example:
                 id: 2
                 aid: 1
@@ -661,13 +526,13 @@ paths:
                   username: user4
                 votes: 0
                 user_votes: {}
-        '404':
+        "404":
           description: The answer does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: 'The answer with aid 50 does not exist.'
+              example: "The answer with aid 50 does not exist."
       tags:
         - discussion
         - answers
@@ -686,21 +551,21 @@ paths:
         user token against the authorization server.
       operationId: dms2223backend.presentation.rest.moderate.create_answer_report
       parameters:
-        - $ref: '#/components/parameters/AnswerIdPathParam'
+        - $ref: "#/components/parameters/AnswerIdPathParam"
       requestBody:
         content:
-          'application/json':
+          "application/json":
             schema:
-              $ref: '#/components/schemas/AnswerReportCreationModel'
+              $ref: "#/components/schemas/AnswerReportCreationModel"
             example:
               reason: Unrelated to the question
       responses:
-        '201':
+        "201":
           description: The created report.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/AnswerReportFullModel'
+                $ref: "#/components/schemas/AnswerReportFullModel"
               example:
                 id: 1
                 aid: 7
@@ -709,13 +574,13 @@ paths:
                 owner:
                   username: user4
                 timestamp: 1665922785
-        '404':
+        "404":
           description: The answer does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: 'The answer with aid 50 does not exist.'
+              example: "The answer with aid 50 does not exist."
       tags:
         - discussion
         - moderation
@@ -726,126 +591,61 @@ paths:
           api_key: []
 
   /answers/reports:
-      get:
-        summary: Get a list of answer reports.
-        description: |
-          This operation gets a listing of answer reports.
+    get:
+      summary: Get a list of answer reports.
+      description: |
+        This operation gets a listing of answer reports.
 
-          Several parameters can be used to filter out the reports according to
-          their status.
-        operationId: dms2223backend.presentation.rest.moderate.list_reports_answer
-        parameters:
-          - name: pending
-            description: |
-              Set to `false` to exclude the pending reports from the listing.
-            in: query
-            required: false
-            schema:
-              type: boolean
-              default: true
-          - name: accepted
-            description: |
-              Set to `false` to exclude the accepted reports from the listing.
-            in: query
-            required: false
-            schema:
-              type: boolean
-              default: true
-          - name: rejected
-            description: |
-              Set to `false` to exclude the rejected reports from the listing.
-            in: query
-            required: false
-            schema:
-              type: boolean
-              default: true
-        responses:
-          '200':
-            description: Listing of answer reports
-            content:
-              'application/json':
-                schema:
-                  $ref: '#/components/schemas/AnswerReportsListModel'
-                example:
-                  - id: 1
-                    aid: 7
-                    reason: Unrelated to the question
-                    status: ACCEPTED
-                    owner:
-                      username: user4
-                    timestamp: 1665922785
-        tags:
-          - moderation
-          - answers
-          - reports
-        security:
-          - user_token: []
-            api_key: []
-  # /answers/reports/{arid}:
-  #   put:
-  #     summary: Change the status of an answer report
-  #     description: |
-  #       Use this operation to change the status of an answer report.
-
-  #       When a report on an answer is accepted, the linked answer should be
-  #       hidden so neither the answer nor its comments are visible.
-  #     # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #     parameters:
-  #       - $ref: '#/components/parameters/AnswerReportIdPathParam'
-  #     requestBody:
-  #       content:
-  #         'application/json':
-  #           schema:
-  #             $ref: '#/components/schemas/ReportStatusChangeModel'
-  #           example:
-  #             status: REJECTED
-  #     responses:
-  #       '204':
-  #         $ref: '#/components/responses/ReportStatusChanged'
-  #       '404':
-  #         description: The answer report does not exist.
-  #         content:
-  #           'text/plain':
-  #             schema:
-  #               type: string
-  #             example: 'The answer report with arid 25 does not exist.'
-  #     tags:
-  #       - moderation
-  #       - answers
-  #       - reports
-  #     security:
-  #       - user_token: []
-  #         api_key: []
-  # /comments/{cid}/votes:
-  #   post:
-  #     summary: Upvote a comment
-  #     description: |
-  #       This operation will cast a vote on a comment.
-
-  #       The user voting will be automatically retrieved from the user token
-  #       against the authorization server.
-  #     # operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #     parameters:
-  #       - $ref: '#/components/parameters/CommentIdPathParam'
-  #     responses:
-  #       '201':
-  #         $ref: '#/components/responses/VoteCast'
-  #       '404':
-  #         description: The comment does not exist.
-  #         content:
-  #           'text/plain':
-  #             schema:
-  #               type: string
-  #             example: 'The comment with cid 75 does not exist.'
-  #       '409':
-  #         $ref: '#/components/responses/VoteAlreadyCast'
-  #     tags:
-  #       - discussion
-  #       - comments
-  #       - votes
-  #     security:
-  #       - user_token: []
-  #         api_key: []
+        Several parameters can be used to filter out the reports according to
+        their status.
+      operationId: dms2223backend.presentation.rest.moderate.list_reports_answer
+      parameters:
+        - name: pending
+          description: |
+            Set to `false` to exclude the pending reports from the listing.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: accepted
+          description: |
+            Set to `false` to exclude the accepted reports from the listing.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: rejected
+          description: |
+            Set to `false` to exclude the rejected reports from the listing.
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        "200":
+          description: Listing of answer reports
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/AnswerReportsListModel"
+              example:
+                - id: 1
+                  aid: 7
+                  reason: Unrelated to the question
+                  status: ACCEPTED
+                  owner:
+                    username: user4
+                  timestamp: 1665922785
+      tags:
+        - moderation
+        - answers
+        - reports
+      security:
+        - user_token: []
+          api_key: []
 
   /comments/{id}/reports:
     post:
@@ -857,21 +657,21 @@ paths:
         user token against the authorization server.
       operationId: dms2223backend.presentation.rest.moderate.create_comment_report
       parameters:
-        - $ref: '#/components/parameters/CommentIdPathParam'
+        - $ref: "#/components/parameters/CommentIdPathParam"
       requestBody:
         content:
-          'application/json':
+          "application/json":
             schema:
-              $ref: '#/components/schemas/CommentReportCreationModel'
+              $ref: "#/components/schemas/CommentReportCreationModel"
             example:
               reason: Ambiguous sentiment
       responses:
-        '201':
+        "201":
           description: The created report.
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/CommentReportFullModel'
+                $ref: "#/components/schemas/CommentReportFullModel"
               example:
                 id: 1
                 cid: 7
@@ -880,13 +680,13 @@ paths:
                 owner:
                   username: user4
                 timestamp: 1665922785
-        '404':
+        "404":
           description: The comment does not exist.
           content:
-            'text/plain':
+            "text/plain":
               schema:
                 type: string
-              example: 'The comment with cid 75 does not exist.'
+              example: "The comment with cid 75 does not exist."
       tags:
         - discussion
         - moderation
@@ -931,12 +731,12 @@ paths:
             type: boolean
             default: true
       responses:
-        '200':
+        "200":
           description: Listing of comment reports
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/CommentReportsListModel'
+                $ref: "#/components/schemas/CommentReportsListModel"
               example:
                 - id: 1
                   cid: 7
@@ -952,41 +752,6 @@ paths:
       security:
         - user_token: []
           api_key: []
-  # /comments/reports/{crid}:
-  #     put:
-  #       summary: Change the status of a comment report
-  #       description: |
-  #         Use this operation to change the status of a comment report.
-
-  #         When a report on a comment is accepted, the linked comment should be
-  #         hidden so it will not be visible.
-  #       operationId: TODO: Set to the fully-qualified name of the function handling the operation
-  #       parameters:
-  #         - $ref: '#/components/parameters/CommentReportIdPathParam'
-  #       requestBody:
-  #         content:
-  #           'application/json':
-  #             schema:
-  #               $ref: '#/components/schemas/ReportStatusChangeModel'
-  #             example:
-  #               status: ACCEPTED
-  #       responses:
-  #         '204':
-  #           $ref: '#/components/responses/ReportStatusChanged'
-  #         '404':
-  #           description: The comment report does not exist.
-  #           content:
-  #             'text/plain':
-  #               schema:
-  #                 type: string
-  #               example: 'The comment report with crid 25 does not exist.'
-  #       tags:
-  #         - moderation
-  #         - comments
-  #         - reports
-  #       security:
-  #         - user_token: []
-  #           api_key: []
 components:
   schemas:
     QuestionCoreModel:
@@ -1000,7 +765,7 @@ components:
           type: string
         answered:
           type: integer
-      
+
       required:
         - id
         - title
@@ -1008,17 +773,17 @@ components:
 
     QuestionStubModel:
       allOf:
-        - $ref: '#/components/schemas/QuestionCoreModel'
+        - $ref: "#/components/schemas/QuestionCoreModel"
 
     QuestionFullModel:
       allOf:
-        - $ref: '#/components/schemas/QuestionCoreModel'
+        - $ref: "#/components/schemas/QuestionCoreModel"
         - type: object
           properties:
             contentSS:
               type: string
             owner:
-              $ref: '#/components/schemas/UserCoreModel'
+              $ref: "#/components/schemas/UserCoreModel"
           required:
             - title
             - content
@@ -1030,14 +795,14 @@ components:
           type: string
         content:
           type: string
-          
+
       required:
         - title
         - content
     QuestionsListModel:
       type: array
       items:
-        $ref: '#/components/schemas/QuestionStubModel'
+        $ref: "#/components/schemas/QuestionStubModel"
 
     UserCoreModel:
       type: object
@@ -1046,7 +811,7 @@ components:
           type: string
       required:
         - username
-    
+
     AnswerFullModel:
       type: object
       properties:
@@ -1069,11 +834,10 @@ components:
         #   type: object
         #   additionalProperties:
         #     type: boolean
-        
-        comments:
-          $ref: '#/components/schemas/CommentsListModel'
 
-      
+        comments:
+          $ref: "#/components/schemas/CommentsListModel"
+
       required:
         #- aid
         #- id
@@ -1096,107 +860,27 @@ components:
     AnswersListModel:
       type: array
       items:
-        $ref: '#/components/schemas/AnswerFullModel'
-    
+        $ref: "#/components/schemas/AnswerFullModel"
+
     CommentFullModel:
       type: object
       properties:
         content:
-            type: string
-        # id:
-        #   type: integer
-        # aid:
-        #   type: integer
-        # timestamp:
-        #   type: number
-        # body:
-        #   type: string
-        # sentiment:
-        #   type: string
-        #   enum:
-        #     - POSITIVE
-        #     - NEUTRAL
-        #     - NEGATIVE
-        # owner:
-        #   $ref: '#/components/schemas/UserCoreModel'
-        # votes:
-        #   type: integer
-        #   minimum: 0
-        #   default: 0
-        #   nullable: false
-        # user_votes:
-        #   type: object
-        #   additionalProperties:
-        #     type: boolean
-        # content:
-        #     type: string
-        # id:
-        #   type: integer
-        # aid:
-        #   type: integer
-        # timestamp:
-        #   type: number
-        # body:
-        #   type: string
-        # sentiment:
-        #   type: string
-        #   enum:
-        #     - POSITIVE
-        #     - NEUTRAL
-        #     - NEGATIVE
-        # owner:
-        #   $ref: '#/components/schemas/UserCoreModel'
-        # votes:
-        #   type: integer
-        #   minimum: 0
-        #   default: 0
-        #   nullable: false
-        # user_votes:
-        #   type: object
-        #   additionalProperties:
-        #     type: boolean
+          type: string
       required:
         - content
-        # - id
-        # - aid
-        # - timestamp
-        # - content
-        # - sentiment
-        # - owner
-        # - id
-        # - aid
-        # - timestamp
-        # - content
-        # - sentiment
-        # - owner
     CommentCreationModel:
       type: object
       properties:
         content:
           type: string
-        # sentiment:
-        #   type: string
-        #   enum:
-        #     - POSITIVE
-        #     - NEUTRAL
-        #     - NEGATIVE
-        #   default: NEUTRAL
-        # sentiment:
-        #   type: string
-        #   enum:
-        #     - POSITIVE
-        #     - NEUTRAL
-        #     - NEGATIVE
-        #   default: NEUTRAL
       required:
         - content
-        #- sentiment
-        #- sentiment
     CommentsListModel:
       type: array
       items:
-        $ref: '#/components/schemas/CommentFullModel'
-    
+        $ref: "#/components/schemas/CommentFullModel"
+
     QuestionReportFullModel:
       type: object
       properties:
@@ -1213,7 +897,7 @@ components:
             - ACCEPTED
             - REJECTED
         owner:
-          $ref: '#/components/schemas/UserCoreModel'
+          $ref: "#/components/schemas/UserCoreModel"
         timestamp:
           type: number
       required:
@@ -1233,8 +917,8 @@ components:
     QuestionReportsListModel:
       type: array
       items:
-        $ref: '#/components/schemas/QuestionReportFullModel'
-    
+        $ref: "#/components/schemas/QuestionReportFullModel"
+
     AnswerReportFullModel:
       type: object
       properties:
@@ -1251,7 +935,7 @@ components:
             - ACCEPTED
             - REJECTED
         owner:
-          $ref: '#/components/schemas/UserCoreModel'
+          $ref: "#/components/schemas/UserCoreModel"
         timestamp:
           type: number
       required:
@@ -1271,8 +955,8 @@ components:
     AnswerReportsListModel:
       type: array
       items:
-        $ref: '#/components/schemas/AnswerReportFullModel'
-    
+        $ref: "#/components/schemas/AnswerReportFullModel"
+
     CommentReportFullModel:
       type: object
       properties:
@@ -1289,7 +973,7 @@ components:
             - ACCEPTED
             - REJECTED
         owner:
-          $ref: '#/components/schemas/UserCoreModel'
+          $ref: "#/components/schemas/UserCoreModel"
         timestamp:
           type: number
       required:
@@ -1309,8 +993,8 @@ components:
     CommentReportsListModel:
       type: array
       items:
-        $ref: '#/components/schemas/CommentReportFullModel'
-    
+        $ref: "#/components/schemas/CommentReportFullModel"
+
     ReportStatusChangeModel:
       type: object
       properties:
@@ -1325,7 +1009,7 @@ components:
     EmptyContentModel:
       type: string
       nullable: true
-  
+
   parameters:
     QuestionIdPathParam:
       name: id
@@ -1373,31 +1057,31 @@ components:
     Empty:
       description: An empty content.
       content:
-        'text/plain':
+        "text/plain":
           schema:
-            $ref: '#/components/schemas/EmptyContentModel'
-          example: ''
+            $ref: "#/components/schemas/EmptyContentModel"
+          example: ""
     ReportStatusChanged:
       description: Report status successfully changed.
       content:
-        'text/plain':
+        "text/plain":
           schema:
-            $ref: '#/components/schemas/EmptyContentModel'
-          example: ''
+            $ref: "#/components/schemas/EmptyContentModel"
+          example: ""
     VoteCast:
       description: Vote successfully cast.
       content:
-        'text/plain':
+        "text/plain":
           schema:
-            $ref: '#/components/schemas/EmptyContentModel'
-          example: ''
+            $ref: "#/components/schemas/EmptyContentModel"
+          example: ""
     VoteAlreadyCast:
       description: Vote already cast.
       content:
-        'text/plain':
+        "text/plain":
           schema:
-            $ref: '#/components/schemas/EmptyContentModel'
-          example: ''
+            $ref: "#/components/schemas/EmptyContentModel"
+          example: ""
 
   securitySchemes:
     user_token:
@@ -1405,7 +1089,7 @@ components:
         JWS token sent in the `Authorization` header as bearer.
 
         Contains, among other things, the user doing the requests.
-        
+
         It is intended to be handed to the authorization service to obtain
         useful information, rather than trying to decode it in the backend.
       type: http
@@ -1420,4 +1104,3 @@ components:
       name: X-ApiKey-Backend
       in: header
       x-apikeyInfoFunc: dms2223backend.presentation.rest.security.verify_api_key
-

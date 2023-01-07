@@ -7,12 +7,13 @@ from flask import current_app
 from dms2223backend.logic.exc.operationerror import OperationError
 from dms2223backend.service import DiscussionsServices
 
+
 def list_discussions() -> Tuple[List[Dict], Optional[int]]:
     """Lists the existing discussions.
 
     Returns:
-        - Tuple[List[Dict], Optional[int]]: A tuple with a list of dictionaries for the discussions' data
-          and a code 200 OK.
+        - Tuple[List[Dict], Optional[int]]: A tuple with a list
+          of dictionaries for the discussions' data and a code 200 OK.
     """
     with current_app.app_context():
         discussions: List[Dict] = DiscussionsServices.list_discussions(current_app.db)
@@ -36,13 +37,15 @@ def create_discussion(body: Dict) -> Tuple[Union[Dict, str], Optional[int]]:
     with current_app.app_context():
         try:
             discussion: Dict = DiscussionsServices.create_discussion(
-                body['title'], body['content'],current_app.db
+                body['title'], body['content'], current_app.db
             )
         except ValueError:
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)
         except OperationError:
-            return ('The user with the given username can not create a discussion', HTTPStatus.FORBIDDEN.value)
+            return ('The user with the given username can not create a discussion',
+                    HTTPStatus.FORBIDDEN.value)
     return (discussion, HTTPStatus.OK.value)
+
 
 def get_discussion_by_id(id: int) -> Tuple[Union[Dict, str], Optional[int]]:
     """Get a discussion by id.
@@ -58,7 +61,7 @@ def get_discussion_by_id(id: int) -> Tuple[Union[Dict, str], Optional[int]]:
     with current_app.app_context():
         try:
             discussion: Dict = DiscussionsServices.get_discussion_by_id(
-               id, current_app.db
+                id, current_app.db
             )
         except ValueError:
             return ('A mandatory argument is missing', HTTPStatus.BAD_REQUEST.value)
